@@ -92,5 +92,5 @@ class Agent
     /**
      * 验证码接口
      */
-    public function  ve
+
 }
