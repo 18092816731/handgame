@@ -4,13 +4,16 @@ namespace app\test\controller;
 class Agent 
 {
     protected $webUrl;
+    protected $testUrl;
     public function __construct()
     {
         $this->webUrl = 'http://www.handgame.com/';
+        $this->testUrl = 'baiyao.91yelang.top/';
     }
     public function login()
     {
-        $url = $this->webUrl.'api/platform/plat_login';
+        //$url = $this->webUrl.'api/platform/plat_login';
+        $url = $this->testUrl.'api/platform/plat_login';
         $data['account'] = '666666';
         $data['password']  = '123456';
         $res = $this->curl_($url, $data);
@@ -18,7 +21,8 @@ class Agent
     }
     public function plat_send_card()
     {
-        $url = $this->webUrl.'api/platform/plat_send_card';
+        //$url = $this->webUrl.'api/platform/plat_send_card';
+        $url = $this->testUrl.'api/platform/plat_send_card';
         $data['id'] = '123456';
         $data['user_id']  = '888888';
         $data['card_num'] = 20;
