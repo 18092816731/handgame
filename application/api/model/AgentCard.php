@@ -21,7 +21,7 @@ class AgentCard extends Model
         {
             return  return_json(2,'房卡数不能为空');
         }
-        if(!array_key_exists('agent_id',$data))
+        if(!array_key_exists('id',$data))
         {
             return  return_json(2,'代理编号不能为空');
         }
