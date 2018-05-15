@@ -17,6 +17,18 @@ class AgentCard extends Model
     {
         Log::info("调用发送房卡接口");
         //字段验证
+        if(!array_key_exists('card_num',$data))
+        {
+            return  return_json(2,'房卡数不能为空');
+        }
+        if(!array_key_exists('agent_id',$data))
+        {
+            return  return_json(2,'代理编号不能为空');
+        }
+        if(!array_key_exists('user_id',$data))
+        {
+            return  return_json(2,'代理账号不能为空');
+        }
         //参数验证
         $update['card_num']  = $data['card_num'];
         $update['agent_id'] = $data['id'];
