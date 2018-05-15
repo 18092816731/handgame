@@ -8,12 +8,14 @@ class Agent
 {
     //属性
     protected  $agent;
+    protected  $userCard;
     /**
      * 构造函数
      */
     public function __construct()
     {
         $this->agent = new \app\api\model\Agent();
+        $this->userCard  = new \app\api\model\AgentCard();
     }
     /**
      * 1-1 新增代理账号
@@ -33,8 +35,10 @@ class Agent
     public function agent_change(Request $request = null)
     {
         //获取参数 
+
+        $data = $request->param();
         //调取添加表
-        $res = $this->agent->created_agent();        
+        $res = $this->agent->agent_change($data);        
         return $res;
     }
     /**
@@ -44,8 +48,7 @@ class Agent
     public function agent_login(Request $request = null)
     {
         //获取参数
-        $data['account'] = '123456';
-        $data['password'] = '123456';
+        $data = $request->param();
         //调取添加表
         $res = $this->agent->login($data);
         return $res;
@@ -57,8 +60,9 @@ class Agent
     public function agent_send_card(Request $request = null)
     {
         //获取参数
+        $data = $request->param();
         //调取添加表
-        $res = $this->agent->created_agent();
+        $res = $this->userCard->send_card($data,2);
         return $res;
     }
     /**
@@ -68,8 +72,9 @@ class Agent
     public function agent_get_card(Request $request = null)
     {
         //获取参数
+        $data = $request->param();
         //调取添加表
-        $res = $this->agent->created_agent();
+        $res = $this->userCard->plat_send_log($data,2);
         return $res;
     }
     /**
@@ -79,8 +84,9 @@ class Agent
     public function agent_send_log(Request $request = null)
     {
         //获取参数
+         $data = $request->param();
         //调取添加表
-        $res = $this->agent->created_agent();
+        $res = $this->userCard->agent_send_log($data,2);
         return $res;
     }
 }

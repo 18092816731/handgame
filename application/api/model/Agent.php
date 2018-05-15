@@ -9,16 +9,15 @@ class Agent extends Model
     /**
      * 新增代理
      */
-    public function created_agent()
+    public function created_agent($data)
     {
         //系统日志
         
         //字段验证
         
         //参数验证       
-        $insert['account'] = '123456';
-        $insert['password']= md5('123456'); 
-        $insert['pid']     = '0';
+        $insert['account'] = $data['account'];
+        $insert['password']= md5($data['password']);
         //防止重复
         $find = $this->where($insert)->find();
         if($find)
@@ -26,13 +25,16 @@ class Agent extends Model
            return return_json(2,'账号已存在');
         }
         //执行添加
+        $insert['pid']     = $data['pid'];
         $insert['created_at'] = time();
         $res = $this->insert($insert);
         if(!$res)
         {
            return  return_json(2,'创建失败');
         }else{
-           return return_json(1,'创建成功');
+            unset($insert['password']);
+            $res = $this->where($insert)->find();
+           return return_json(1,'创建成功',$res);
         }
     }
 
@@ -55,14 +57,18 @@ class Agent extends Model
             //验证失败
             return return_json(2,'验证码输入错误');
         }; */
-        //数据组装
-        Log::info('调用登录接口——数据组装');
         $find['account'] = $data['account'];
         $find['password'] = md5($data['password']);
         $find['status']   = 1;
+        $find['pid'] = array('neq',0);
         //查询数据
         $response = $this->where($find)->field('id,pid,account,card_num,token')->find();
-        if ($response) {
+        if($response['pid']===0)
+        {
+            return return_json(2,'账号或者密码有误,请重试');
+        }
+        if ($response) 
+        {
             Log::info('调用登录接口——查询成功');
             $insert['agent_id'] = $response['id'];
             $insert['login_time'] = time();
@@ -78,7 +84,43 @@ class Agent extends Model
         }
     }
     /**
-     * 代理登录接口
+     * 平台退出
+     */
+    public function plat_loginout($data)
+    {
+        $where['account'] = $data['account'];
+        $find = $this->where($where)->find();
+        if(!$find)
+        {
+            return return_json(2,'账号信息有误');
+        }
+        return return_json(1,'成功退出');                
+    }
+    public  function agent_change($data)
+    {
+        //字段检验  id account password
+        //参数检验 
+        $update['password'] =  md5($data['password']);  
+        unset($data['password']);
+        //检查账号是否存在
+        $find = $this->where($data)->find();
+        if($find['password']==$update['password'])
+        {
+            return return_json(2,'修改密码相同');
+        }
+        //执行修改
+        $response  = $this->where(['id'=>$data['id']])->update($update);
+        if(!$response)
+        {
+            return return_json(2,'修改失败');
+        }
+        //返回结果 
+        $return = $this->where($data)->find();
+        return return_json(1,'修改成功',$return);
+        
+    }
+    /**
+     * 平台登录接口
      * @param $data 请求数组
      * @return string 返回参数值类型为json
      */
@@ -122,5 +164,8 @@ class Agent extends Model
             return return_json(2,'账号或者密码有误,请重试');
         }
     }
+    
+
+
     
 }
