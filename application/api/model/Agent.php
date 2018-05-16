@@ -133,11 +133,16 @@ class Agent extends Model
         {
             return  return_json(2,'代理密码不能为空');
         }
+        if(!array_key_exists('id',$data))
+        {
+            return  return_json(2,'代理不存在');
+        }
+        $update['password'] =  md5($data['password']); 
 
-        $update['password'] =  md5($data['password']);  
+        $where['account'] =  md5($data['account']);  
         unset($data['password']);
         //检查账号是否存在
-        $find = $this->where($data)->find();
+        $find = $this->where($where)->find();
         if($find['password']==$update['password'])
         {
             return return_json(2,'修改密码相同');
@@ -149,7 +154,7 @@ class Agent extends Model
             return return_json(2,'修改失败');
         }
         //返回结果 
-        $return = $this->where($data)->find();
+        $return = $this->where($where)->find();
         return return_json(1,'修改成功',$return);
         
     }
