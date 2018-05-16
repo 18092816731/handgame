@@ -54,6 +54,19 @@ class Agent
         return $res;
     }
     /**
+     * 1-4 代理房卡总数
+     * @param Request $request
+     */
+    public function agent_card_num(Request $request = null)
+    {
+        //获取参数
+        $data = $request->param();
+        //调取添加表
+        $res = $this->agent->agent_card_num($data);
+        return $res;
+    }
+    
+    /**
      * 2-1 代理发房卡
      * @param Request $request
      */
