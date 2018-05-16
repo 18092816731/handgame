@@ -106,15 +106,16 @@ class AgentCard extends Model
     }
     public function  plat_send_log($data=[],$type  = 2)
     {
-        if(!array_key_exists('id',$data))
-        {
-            return  return_json(2,'代理不存在');
-        }
+
         //获取查询sql
         if($type==1)
         {
             $sql =  "select a.agent_id,a.user_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_plat_card as a,hand_agent as b where a.agent_id  = b.id  ";
         }else{
+            if(!array_key_exists('id',$data))
+            {
+                return  return_json(2,'代理不存在');
+            }
             $sql =  "select a.agent_id,a.user_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_plat_card as a,hand_agent as b where a.agent_id  = b.id and a.user_id = ".$data['id'];
         }
         $res = db()->Query($sql);
@@ -128,15 +129,16 @@ class AgentCard extends Model
     }
     public function  agent_send_log($data=[],$type  = 2)
     {
-        if(!array_key_exists('id',$data))
-        {
-            return  return_json(2,'代理不存在');
-        }
+ 
         //获取查询sql
         if($type==1)
         {
         $sql =  "select a.agent_id,a.user_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b where a.agent_id  = b.id  ";
         }else{
+            if(!array_key_exists('id',$data))
+            {
+                return  return_json(2,'代理不存在');
+            }            
         $sql =  "select a.agent_id,a.user_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b where a.agent_id  = b.id  and a.agent_id = ".$data['id'];
         }
         $res = db()->Query($sql);
