@@ -28,7 +28,7 @@ class Platform
         $res = $this->agent->created_agent($date);
         return $res;
     }
-    public function plat_loginout(Request $request = null)
+    public function loginout(Request $request = null)
     {
         $date = $request->param();
         //调取添加表
