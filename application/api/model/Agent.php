@@ -77,10 +77,6 @@ class Agent extends Model
         {
             return  return_json(2,'代理密码不能为空');
         }
-        if(!array_key_exists('pid',$data))
-        {
-            return  return_json(2,'代理关系不存在');
-        }
         $find['account'] = $data['account'];
         $find['password'] = md5($data['password']);
         $find['status']   = 1;
