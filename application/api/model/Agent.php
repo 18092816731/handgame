@@ -14,6 +14,18 @@ class Agent extends Model
         //系统日志
         
         //字段验证
+        if(!array_key_exists('account',$data))
+        {
+            return  return_json(2,'新增代理账号不能为空');
+        }
+        if(!array_key_exists('password',$data))
+        {
+            return  return_json(2,'新增代理密码不能为空');
+        }
+        if(!array_key_exists('pid',$data))
+        {
+            return  return_json(2,'新增代理未定义');
+        }
         
         //参数验证       
         $insert['account'] = $data['account'];
@@ -57,6 +69,18 @@ class Agent extends Model
             //验证失败
             return return_json(2,'验证码输入错误');
         }; */
+        if(!array_key_exists('account',$data))
+        {
+            return  return_json(2,'代理账号不能为空');
+        }
+        if(!array_key_exists('password',$data))
+        {
+            return  return_json(2,'代理密码不能为空');
+        }
+        if(!array_key_exists('pid',$data))
+        {
+            return  return_json(2,'代理关系不存在');
+        }
         $find['account'] = $data['account'];
         $find['password'] = md5($data['password']);
         $find['status']   = 1;
@@ -88,6 +112,11 @@ class Agent extends Model
      */
     public function plat_loginout($data)
     {
+        if(!array_key_exists('account',$data))
+        {
+            return  return_json(2,'代理账号不能为空');
+        }
+
         $where['account'] = $data['account'];
         $find = $this->where($where)->find();
         if(!$find)
@@ -100,6 +129,15 @@ class Agent extends Model
     {
         //字段检验  id account password
         //参数检验 
+        if(!array_key_exists('account',$data))
+        {
+            return  return_json(2,'代理账号不能为空');
+        }
+        if(!array_key_exists('password',$data))
+        {
+            return  return_json(2,'代理密码不能为空');
+        }
+
         $update['password'] =  md5($data['password']);  
         unset($data['password']);
         //检查账号是否存在
@@ -139,6 +177,14 @@ class Agent extends Model
          return return_json(2,'验证码输入错误');
          }; */
         //数据组装
+        if(!array_key_exists('account',$data))
+        {
+            return  return_json(2,'代理账号不能为空');
+        }
+        if(!array_key_exists('password',$data))
+        {
+            return  return_json(2,'代理密码不能为空');
+        }
         Log::info('调用登录接口——数据组装');
         $find['account'] = $data['account'];
         $find['password'] = md5($data['password']);
