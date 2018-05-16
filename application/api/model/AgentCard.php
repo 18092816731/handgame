@@ -106,6 +106,10 @@ class AgentCard extends Model
     }
     public function  plat_send_log($data=[],$type  = 2)
     {
+        if(!array_key_exists('id',$data))
+        {
+            return  return_json(2,'代理不存在');
+        }
         //获取查询sql
         if($type==1)
         {
@@ -124,6 +128,10 @@ class AgentCard extends Model
     }
     public function  agent_send_log($data=[],$type  = 2)
     {
+        if(!array_key_exists('id',$data))
+        {
+            return  return_json(2,'代理不存在');
+        }
         //获取查询sql
         if($type==1)
         {

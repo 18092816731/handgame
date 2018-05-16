@@ -10,4 +10,9 @@ class Index
         
         //return view('index');
     }
+    public function  check_img()
+    {
+        $captcha = new Captcha();
+        return $captcha->entry();
+    }
 }
