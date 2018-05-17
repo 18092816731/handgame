@@ -19,7 +19,7 @@ class Platform
      * 1-1 新增平台|游戏账号
      * @param Request $request
      */
-    public function plat_created(Request $request = null)
+    public function platCreated(Request $request = null)
     {
         //获取参数
 
@@ -51,7 +51,7 @@ class Platform
      * 1-3 平台|游戏登录
      * @param Request $request
      */
-    public function plat_login(Request $request = null)
+    public function platLogin(Request $request = null)
     {
         //获取参数
         $data = $request->param();
@@ -63,7 +63,7 @@ class Platform
      * 2-1 平台|游戏发房卡
      * @param Request $request
      */
-    public function plat_send_card(Request $request = null)
+    public function platSendCard(Request $request = null)
     {
         //获取参数
         $data = $request->param();
@@ -75,7 +75,7 @@ class Platform
      * 2-2 代理发卡记录
      * @param Request $request
      */
-    public function agent_send_log(Request $request = null)
+    public function agenSendLog(Request $request = null)
     {
         //获取参数
         
@@ -87,7 +87,7 @@ class Platform
      * 2-3 平台|游戏发卡记录
      * @param Request $request
      */
-    public function plat_send_log(Request $request = null)
+    public function platSendLog(Request $request = null)
     {
         //获取参数
         //调取添加表
@@ -98,7 +98,7 @@ class Platform
      * 3-1 平台|游戏数据查询
      * @param Request $request
      */
-    public function plat_data(Request $request = null)
+    public function platData(Request $request = null)
     {
         //获取参数
         //调取添加表
