@@ -75,7 +75,7 @@ class Platform
      * 2-2 代理发卡记录
      * @param Request $request
      */
-    public function agenSendLog(Request $request = null)
+    public function agentSendLog(Request $request = null)
     {
         //获取参数
         
