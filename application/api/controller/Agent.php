@@ -45,7 +45,7 @@ class Agent
      * 1-3 代理登录
      * @param Request $request
      */
-    public function agentCogin(Request $request = null)
+    public function agentLogin(Request $request = null)
     {
         //获取参数
         $data = $request->param();
