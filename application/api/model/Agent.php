@@ -3,6 +3,7 @@ namespace app\api\model;
 
 use think\Model;
 use think\Log;
+use think\Cache;
 
 class Agent extends Model
 {
@@ -97,6 +98,10 @@ class Agent extends Model
             if (!$result) {
                 return return_json(2,'账号或者密码有误,请重试');
             }
+            //缓存token
+            $token = md5(time().'hand_game');
+            $res = $this->where($find)->update(['token'=>$token]);
+            Cache::set('user_'.$response['id'],'123456',1800);
             return return_json(1,'登录成功',$response);
         } else {
             Log::info('调用登录接口——查询失败');
@@ -147,6 +152,10 @@ class Agent extends Model
         {
             return  return_json(2,'代理账号不能为空');
         }
+        if(!array_key_exists('opassword',$data))
+        {
+            return  return_json(2,'旧密码不能为空');
+        }
         if(!array_key_exists('password',$data))
         {
             return  return_json(2,'代理密码不能为空');
@@ -155,9 +164,9 @@ class Agent extends Model
         {
             return  return_json(2,'代理不存在');
         }
-        $update['password'] =  md5($data['password']); 
-
-        $where['account'] =  md5($data['account']);  
+        $where['password'] =  md5($data['opassword']); 
+        $where['account'] =  $data['account'];  
+        $update['password'] = md5($data['password']);
         unset($data['password']);
         //检查账号是否存在
         $find = $this->where($where)->find();
