@@ -145,7 +145,7 @@ class AgentCard extends Model
             $sqlc =  "select count(a.plat_id)  from hand_plat_card as a,hand_agent as b  ".$where;            
             $count = db()->Query($sqlc);
             $totle = $count[0]["count(a.plat_id)"];//总数
-            $limit = 3;//每页条数
+            $limit = 15;//每页条数
             $pageNum = ceil ( $totle/$limit); //总页数
             //当前页
             if(array_key_exists('npage', $data))
@@ -191,7 +191,7 @@ class AgentCard extends Model
             $sqlc =  "select count(a.plat_id)  from hand_plat_card as a,hand_agent as b  ".$where;
             $count = db()->Query($sqlc);
             $totle = $count[0]["count(a.plat_id)"];//总数
-            $limit = 3;//每页条数
+            $limit = 15;//每页条数
             $pageNum = ceil ( $totle/$limit); //总页数
             //当前页
             if(array_key_exists('npage', $data))
@@ -256,11 +256,10 @@ class AgentCard extends Model
             //分页
             //计算总页数
             $sqlc =  "select count(a.agent_id)  from hand_agent_card as a,hand_agent as b   ".$where;
-           
             $count = db()->Query($sqlc);
             
             $totle = $count[0]["count(a.agent_id)"];//总数
-            $limit = 3;//每页条数
+            $limit = 30;//每页条数
             $pageNum = ceil ( $totle/$limit); //总页数
             //当前页
             if(array_key_exists('npage', $data))
@@ -302,7 +301,7 @@ class AgentCard extends Model
             $count = db()->Query($sqlc);
     
             $totle = $count[0]["count(a.agent_id)"];//总数
-            $limit = 3;//每页条数
+            $limit = 30;//每页条数
             $pageNum = ceil ( $totle/$limit); //总页数
             //当前页
             if(array_key_exists('npage', $data))
