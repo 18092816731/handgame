@@ -247,11 +247,17 @@ class AgentCard extends Model
             {
                 $where .= ' and a.created_at >= '.$data['start_time'].' and a.created_at <= '.$data['end_time'];
             }   
-            //分页
+            //判断是否为空
+            $emptya = db('agent_card')->select();
+            if(empty($emptya))
+            {
+                return  return_json(1,'数据为空');
+            }
             //分页
             //计算总页数
             $sqlc =  "select count(a.agent_id)  from hand_plat_card as a,hand_agent as b   ".$where;
             $count = db()->Query($sqlc);
+            
             $totle = $count[0]["count(a.agent_id)"];//总数
             $limit = 3;//每页条数
             $pageNum = ceil ( $totle/$limit); //总页数
@@ -290,8 +296,10 @@ class AgentCard extends Model
             } 
             //分页
             //计算总页数
+            
             $sqlc =  "select count(a.agent_id)  from hand_agent_card as a,hand_agent as b  ".$where;
             $count = db()->Query($sqlc);
+    
             $totle = $count[0]["count(a.agent_id)"];//总数
             $limit = 3;//每页条数
             $pageNum = ceil ( $totle/$limit); //总页数
