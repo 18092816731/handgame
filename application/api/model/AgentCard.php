@@ -255,7 +255,8 @@ class AgentCard extends Model
             }
             //分页
             //计算总页数
-            $sqlc =  "select count(a.agent_id)  from hand_plat_card as a,hand_agent as b   ".$where;
+            $sqlc =  "select count(a.agent_id)  from hand_agent_card as a,hand_agent as b   ".$where;
+           
             $count = db()->Query($sqlc);
             
             $totle = $count[0]["count(a.agent_id)"];//总数
