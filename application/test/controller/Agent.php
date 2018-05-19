@@ -12,34 +12,41 @@ class Agent
     }
     public function login()
     {
-        //$url = $this->webUrl.'api/platform/plat_login';
-        $url = $this->testUrl.'api/platform/plat_login';
+        $url = $this->webUrl.'api/platform/platLogin';
+        //$url = $this->testUrl.'api/platform/plat_login';
         $data['account'] = '666666';
         $data['password']  = '123456';
         $res = $this->curl_($url, $data);
         dump($res);
-    }
-    public function plat_send_card()
+    } 
+    public function platSendCard()
     {
-        //$url = $this->webUrl.'api/platform/plat_send_card';
-        $url = $this->testUrl.'api/platform/plat_send_card';
-        $data['id'] = '123456';
-        $data['user_id']  = '888888';
+        $url = $this->webUrl.'api/platform/platSendCard';
+        //$url = $this->testUrl.'api/platform/plat_send_card';
+        $data['id'] = '4';
+        $data['agent_account']  = '888888';
         $data['card_num'] = 20;
         $res = $this->curl_($url, $data);
         dump($res);
     }
-    public function plat_send_log()
+    public function platSendLog()
     {
-        $url = $this->webUrl.'api/platform/plat_send_log';
+        $url = $this->webUrl.'api/platform/platSendLog';
         $data = [];
+        $data['agent_account'] = '8';
+        $data['npage'] =1;
+        //$data['start_time'] = '1526351618';
+        //$data['end_time'] = '1526352244';
         $res = $this->curl_($url, $data);
         dump($res);
     }
-    public function agent_send_log()
+    public function agentSendLog()
     {
-        $url = $this->webUrl.'api/platform/agent_send_log';
-        $data = [];
+        $url = $this->webUrl.'api/platform/agentSendLog';
+        //$data['account'] = '8';
+        //$data['start_time'] = '1526351618';
+        //$data['end_time'] = '1526352244';
+        $data['npage'] =1;
         $res = $this->curl_($url, $data);
         dump($res);
     }
@@ -68,11 +75,11 @@ class Agent
         $res = $this->curl_($url, $data);
         dump($res);
     }
-    public function agent_send_card()
+    public function agentSendCard()
     {
-        $url = $this->webUrl.'api/agent/agent_send_card';
+        $url = $this->webUrl.'api/agent/agentSendCard';
         $data['id'] = 5;
-        $data['user_id']  = 'ID564823';
+        $data['user_account']  = 'ID564823';
         $data['card_num'] = 20;
         $res = $this->curl_($url, $data);
         dump($res);
@@ -86,17 +93,25 @@ class Agent
         $res = $this->curl_($url, $data);
         dump($res);
     }
-    public function agent_get_card()
+    public function agentGetCard()
     {
-        $url = $this->webUrl.'api/agent/agent_get_card';
-        $data['id'] = 5;
+        $url = $this->webUrl.'api/agent/agentGetCard';
+        $data['id'] =5;
+      //  $data['agent_account'] = 888888;
+        //$data['start_time'] = '1526351618';
+        //$data['start_time'] =   '1526352244';
+        $data['npage'] =1;
         $res = $this->curl_($url, $data);
         dump($res);
     }
-    public function agent_send_log1()
+    public function agentSendLog1()
     {
-        $url = $this->webUrl.'api/agent/agent_send_log';
+        $url = $this->webUrl.'api/agent/agentSendLog';
         $data['id'] = 5;
+        //$data['agent_account'] = 888888;
+       // $data['start_time'] = '1526351618';
+       // $data['end_time'] = '1526352244';
+        $data['npage'] =2;
         $res = $this->curl_($url, $data);
         dump($res);
     }

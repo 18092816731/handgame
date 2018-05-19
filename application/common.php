@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
-function  return_json($status =1 ,$msg = '',$data = [])
+function  return_json($status =1 ,$msg = '',$data = [],$page=[])
 {
     if($status ==1)
     {
@@ -18,12 +18,12 @@ function  return_json($status =1 ,$msg = '',$data = [])
         {
             $msg = '操作成功';
         }        
-        return json_encode(['status'=>'SUCCESS','code'=>200,'msg'=>$msg,'data'=>$data]);
+        return json_encode(['status'=>'SUCCESS','code'=>200,'msg'=>$msg,'data'=>$data,'page'=>$page]);
     }else{
         if($msg =='')
         {
             $msg = '操作失败';
         }
-        return json_encode(['status'=>'FAIL','code'=>201,'msg'=>$msg,'data'=>$data]);
+        return json_encode(['status'=>'FAIL','code'=>201,'msg'=>$msg,'data'=>$data,'page'=>$page]);
     }
 }

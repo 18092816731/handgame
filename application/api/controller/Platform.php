@@ -78,9 +78,9 @@ class Platform
     public function agentSendLog(Request $request = null)
     {
         //获取参数
-        
+        $data = $request->param();
         //调取添加表
-        $res = $this->userCard->agent_send_log('',1);
+        $res = $this->userCard->agent_send_log($data,1);
         return $res;
     }
     /**
@@ -90,8 +90,9 @@ class Platform
     public function platSendLog(Request $request = null)
     {
         //获取参数
+        $data = $request->param();
         //调取添加表
-        $res = $this->userCard->plat_send_log('',1);
+        $res = $this->userCard->plat_send_log($data,1);
         return $res;
     }
     /**

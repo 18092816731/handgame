@@ -23,17 +23,9 @@ class AgentCard extends Model
         }
         if(!array_key_exists('id',$data))
         {
-            return  return_json(2,'代理编号不能为空');
+            return  return_json(2,'登录权限超时');
         }
-        if(!array_key_exists('user_id',$data))
-        {
-            return  return_json(2,'代理账号不能为空');
-        }
-        //参数验证
-        $update['card_num']  = $data['card_num'];
-        $update['agent_id'] = $data['id'];
-        $update['user_id']  = $data['user_id'];
-        $update['created_at'] = time();
+
 
         //开启事务
         db::startTrans();        
@@ -41,32 +33,50 @@ class AgentCard extends Model
             //$type = 1 平台发卡  $type = 2 代理发卡
             if($type == 1)
             {
+                if(!array_key_exists('agent_account',$data))
+                {
+                    return  return_json(2,'代理账号不能为空');
+                }
+                //参数验证
+                $update['card_num']  = $data['card_num'];
+                $update['plat_id'] = $data['id'];
+                $update['agent_account']  = $data['agent_account'];
+                $update['created_at'] = time();
+                
                 //获取买卡 代理账号
-                $userInfo = db('agent')->where(['account'=>$data['user_id']])->find();
+                $userInfo = db('agent')->where(['account'=>$data['agent_account']])->find();
                 if(!$userInfo)
                 {
-                    return  return_json(2,'没有代理信息');
+                    return  return_json(2,'代理不存在');
                 }
-                $update['user_account'] = $userInfo['account'];
+                $update['agent_account'] = $userInfo['account'];
                 //给代理添加房卡 平台不消耗            
                 $upplat['card_num']  = $userInfo['card_num'] + $update['card_num'];
                 $upplat['update_at'] =   time();
                 
-                $response =  db('agent')->where(['account'=>$data['user_id']])->update($upplat);                          
+                $response =  db('agent')->where(['account'=>$data['agent_account']])->update($upplat);                          
                 if(!$response)
                 {
-                    return  return_json(2,'房卡数未能发放');
+                    return  return_json(2,'房卡数未能发放1');
                 }   
                 //添加房卡使用日志
                 $result =  db('plat_card')->insert($update);
                 if(!$result)
                 {
-                    return return_json(2,'房卡数未能发放');
+                    return return_json(2,'房卡数未能发放2');
                 }
             }else{
+                if(!array_key_exists('user_account',$data))
+                {
+                    return  return_json(2,'代理账号不能为空');
+                }
+                //参数验证
+                $update['card_num']  = $data['card_num'];
+                $update['agent_id'] = $data['id']; //代理id 
+                $update['user_account']  = $data['user_account'];//购买房卡用户账号
+                $update['created_at'] = time();
                 //获取代理信息 
-                $agentInfo = db('agent')->where(['id'=>$data['id']])->find();
-     
+                $agentInfo = db('agent')->where(['id'=>$data['id']])->find();     
                 if(!$agentInfo)
                 {
                     return  return_json(2,'没有代理信息');
@@ -75,10 +85,7 @@ class AgentCard extends Model
                 if($agentInfo['card_num']<$update['card_num'])
                 {
                     return return_json(2,'房卡数目不足，请充值.当前房卡为'.$agentInfo['card_num']);
-                }     
-                
-                //获取买卡用户账号
-                $update['user_account'] = $data['user_id'];
+                }                     
                 //代理房卡消耗 用户房卡逻辑不执行
                 $upagent['card_num']  = $agentInfo['card_num'] - $update['card_num'];
                 $upagent['update_at'] =   time();
@@ -101,53 +108,215 @@ class AgentCard extends Model
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
-            return return_json(2,'房卡数未能发放');
+            return return_json(2,'房卡数未能发放3');
         }  
     }
+    /**
+     *平台代理完成发卡查询
+     * @param array $data
+     * @param number $type 1 平台逻辑  2代理逻辑
+     * @return string
+     */
     public function  plat_send_log($data=[],$type  = 2)
-    {
+    {  
 
         //获取查询sql
         if($type==1)
-        {
-            $sql =  "select a.agent_id,a.user_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_plat_card as a,hand_agent as b where a.agent_id  = b.id  ";
-        }else{
-            if(!array_key_exists('id',$data))
+        {//平台记录查询
+            $where = 'where a.plat_id  = b.id ';
+            if(array_key_exists('agent_account',$data))
             {
-                return  return_json(2,'代理不存在');
+                $where .= ' and agent_account like  "%'.$data["agent_account"].'%"';
             }
-            $sql =  "select a.agent_id,a.user_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_plat_card as a,hand_agent as b where a.agent_id  = b.id and a.user_id = ".$data['id'];
+            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at >= '.$data['start_time'];
+            }
+            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at <= '.$data['end_time'];
+            }
+            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at >= '.$data['start_time'].' and  a.created_at <= '.$data['end_time'];
+            }
+            //分页
+            //计算总页数
+            $sqlc =  "select count(a.plat_id)  from hand_plat_card as a,hand_agent as b  ".$where;            
+            $count = db()->Query($sqlc);
+            $totle = $count[0]["count(a.plat_id)"];//总数
+            $limit = 3;//每页条数
+            $pageNum = ceil ( $totle/$limit); //总页数
+            //当前页
+            if(array_key_exists('npage', $data))
+            {
+                $npage = $data['npage'];
+            }else{
+                $npage = 1;
+            }           
+            $start = ($npage-1)*$limit;
+            $page = [];
+            $page['npage'] = $npage;//当前页
+            $page['totle'] = $totle;//总条数
+            $page['tpage'] = $pageNum;//总页数
+            //开始数$start $limie                
+            $sql =  "select * from  ( select a.plat_id,a.agent_account,a.card_num,a.created_at,b.account  as  agent_name from hand_plat_card as a,hand_agent as b  ".$where.") agentinfo limit ".$start.",".$limit;     
+        }else{
+            if(!array_key_exists('id', $data) )
+            {
+                return return_json(2,'暂无代理信息 ');
+            }else{
+                $agentInfo = db('agent')->where(['id'=>$data['id']])->find();
+                if(!$agentInfo)
+                {
+                    return return_json(2,'暂无代理信息 ');
+                }
+            }   
+            $where = 'where a.plat_id  = b.id and a.agent_account = '.$agentInfo['account'];
+
+            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at >= '.$data['start_time'];
+            }
+            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at <= '.$data['end_time'];
+            }
+            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at >= '.$data['start_time'].' and a.created_at <= '.$data['end_time'];
+            }
+            //分页
+            //计算总页数
+            $sqlc =  "select count(a.plat_id)  from hand_plat_card as a,hand_agent as b  ".$where;
+            $count = db()->Query($sqlc);
+            $totle = $count[0]["count(a.plat_id)"];//总数
+            $limit = 3;//每页条数
+            $pageNum = ceil ( $totle/$limit); //总页数
+            //当前页
+            if(array_key_exists('npage', $data))
+            {
+                $npage = $data['npage'];
+            }else{
+                $npage = 1;
+            }
+            $start = ($npage-1)*$limit;
+            $page = [];
+            $page['npage'] = $npage;//当前页
+            $page['totle'] = $totle;//总条数
+            $page['tpage'] = $pageNum;//总页数
+
+            $sql =  "select * from (select a.plat_id,a.card_num,a.created_at,a.agent_account,b.account  as  agent_name from hand_plat_card as a,hand_agent as b ".$where.") agentinfo limit ".$start.",".$limit;
         }
+        
         $res = db()->Query($sql);
+        
         //判断是否为空
         if(!$res)
         {
             return return_json(1,'暂无信息 ');
         }
         //返回结果
-        return return_json(1,'平台发卡记录',$res);         
+        return return_json(1,'平台发卡记录',$res,$page);         
     }
+    /**
+     * 代理发卡记录
+     * @param array $data
+     * @param number $type 1 平台  2 代理
+     */
     public function  agent_send_log($data=[],$type  = 2)
     {
  
         //获取查询sql
         if($type==1)
         {
-        $sql =  "select a.agent_id,a.user_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b where a.agent_id  = b.id  ";
+            $where = 'where a.agent_id  = b.id ';
+            if(array_key_exists('account',$data))
+            {
+                $where .= ' and account like  "%'.$data["account"].'%"';
+            }
+            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at >= '.$data['start_time'];
+            }
+            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at <= '.$data['end_time'];
+            }
+            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at >= '.$data['start_time'].' and a.created_at <= '.$data['end_time'];
+            }   
+            //分页
+            //分页
+            //计算总页数
+            $sqlc =  "select count(a.agent_id)  from hand_agent_card as a,hand_agent as b   ".$where;
+            $count = db()->Query($sqlc);
+            $totle = $count[0]["count(a.agent_id)"];//总数
+            $limit = 3;//每页条数
+            $pageNum = ceil ( $totle/$limit); //总页数
+            //当前页
+            if(array_key_exists('npage', $data))
+            {
+                $npage = $data['npage'];
+            }else{
+                $npage = 1;
+            }
+            $start = ($npage-1)*$limit;
+            $page = [];
+            $page['npage'] = $npage;//当前页
+            $page['totle'] = $totle;//总条数
+            $page['tpage'] = $pageNum;//总页数
+            
+             $sql =  "select *from (select a.agent_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b  ".$where.") agentinfo limit ".$start.",".$limit;
+        
         }else{
             if(!array_key_exists('id',$data))
             {
                 return  return_json(2,'代理不存在');
-            }            
-        $sql =  "select a.agent_id,a.user_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b where a.agent_id  = b.id  and a.agent_id = ".$data['id'];
-        }
-        $res = db()->Query($sql);
+            }  
+            $where = ' where a.agent_id  = b.id and a.agent_id = '.$data["id"];
+            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at >= '.$data['start_time'];
+            }
+            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            {
+                $where .= ' and a.created_at <= '.$data['end_time'];
+            }
+            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            {
+                $where .= ' and  a.created_at >= '.$data['start_time'].' and a.created_at <= '.$data['end_time'];
+            }
+            //分页
+            //计算总页数
+            $sqlc =  "select count(a.agent_id)  from hand_agent_card as a,hand_agent as b  ".$where;
+            $count = db()->Query($sqlc);
+            $totle = $count[0]["count(a.agent_id)"];//总数
+            $limit = 3;//每页条数
+            $pageNum = ceil ( $totle/$limit); //总页数
+            //当前页
+            if(array_key_exists('npage', $data))
+            {
+                $npage = $data['npage'];
+            }else{
+                $npage = 1;
+            }
+            $start = ($npage-1)*$limit;
+            $page = [];
+            $page['npage'] = $npage;//当前页
+            $page['totle'] = $totle;//总条数
+            $page['tpage'] = $pageNum;//总页数
+            
+            $sql =  "select * from (select a.agent_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b ".$where.") agentinfo limit ".$start.",".$limit;
+            }
+            $res = db()->Query($sql);
         //判断是否为空
         if(!$res)
         {
             return return_json(1,'暂无信息 ');
         }
         //返回结果
-        return return_json(1,'平台发卡记录',$res);
+        return return_json(1,'平台发卡记录',$res,$page);
     }
 }
