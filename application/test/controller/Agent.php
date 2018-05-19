@@ -21,9 +21,9 @@ class Agent
     } 
     public function platSendCard()
     {
-        $url = $this->webUrl.'api/platform/platSendCard';
-        //$url = $this->testUrl.'api/platform/plat_send_card';
-        $data['id'] = '4';
+        //$url = $this->webUrl.'api/platform/platSendCard';
+        $url = $this->testUrl.'api/platform/platSendCard';
+        $data['id'] = '10';
         $data['agent_account']  = '888888';
         $data['card_num'] = 20;
         $res = $this->curl_($url, $data);
@@ -31,10 +31,11 @@ class Agent
     }
     public function platSendLog()
     {
-        $url = $this->webUrl.'api/platform/platSendLog';
+        //$url = $this->webUrl.'api/platform/platSendLog';
+        $url = $this->testUrl.'api/platform/platSendLog';
         $data = [];
-        $data['agent_account'] = '8';
-        $data['npage'] =1;
+        //$data['agent_account'] = '8';
+        //$data['npage'] =1;
         //$data['start_time'] = '1526351618';
         //$data['end_time'] = '1526352244';
         $res = $this->curl_($url, $data);

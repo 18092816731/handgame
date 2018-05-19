@@ -16,6 +16,7 @@ class Agent
     {
         $this->agent = new \app\api\model\Agent();
         $this->userCard  = new \app\api\model\AgentCard();
+        //验证
     }
     /**
      * 1-1 新增代理账号

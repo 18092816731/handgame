@@ -124,22 +124,22 @@ class AgentCard extends Model
         if($type==1)
         {//平台记录查询
             $where = 'where a.plat_id  = b.id ';
-            if(array_key_exists('agent_account',$data))
+                  if(array_key_exists('account',$data) && $data['account'] !='')
             {
-                $where .= ' and agent_account like  "%'.$data["agent_account"].'%"';
+                $where .= ' and account like  "%'.$data["account"].'%"';
             }
-            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data))
+            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data) && $data['start_time'] !='' && $data['end_time'] !='')
             {
                 $where .= ' and a.created_at >= '.$data['start_time'];
             }
-            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data) && $data['start_time'] !='')
             {
                 $where .= ' and a.created_at <= '.$data['end_time'];
             }
-            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data)&& $data['end_time'] !='')
             {
-                $where .= ' and a.created_at >= '.$data['start_time'].' and  a.created_at <= '.$data['end_time'];
-            }
+                $where .= ' and a.created_at >= '.$data['start_time'].' and a.created_at <= '.$data['end_time'];
+            } 
             //分页
             //计算总页数
             $sqlc =  "select count(a.plat_id)  from hand_plat_card as a,hand_agent as b  ".$where;            
@@ -174,18 +174,18 @@ class AgentCard extends Model
             }   
             $where = 'where a.plat_id  = b.id and a.agent_account = '.$agentInfo['account'];
 
-            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data))
+            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data) && $data['start_time'] !='' && $data['end_time'] !='')
             {
                 $where .= ' and a.created_at >= '.$data['start_time'];
             }
-            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data) && $data['start_time'] !='')
             {
                 $where .= ' and a.created_at <= '.$data['end_time'];
             }
-            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data)&& $data['end_time'] !='')
             {
                 $where .= ' and a.created_at >= '.$data['start_time'].' and a.created_at <= '.$data['end_time'];
-            }
+            } 
             //分页
             //计算总页数
             $sqlc =  "select count(a.plat_id)  from hand_plat_card as a,hand_agent as b  ".$where;
@@ -231,26 +231,26 @@ class AgentCard extends Model
         if($type==1)
         {
             $where = 'where a.agent_id  = b.id ';
-            if(array_key_exists('account',$data))
+            if(array_key_exists('account',$data) && $data['account'] !='')
             {
                 $where .= ' and account like  "%'.$data["account"].'%"';
             }
-            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data))
+            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data) && $data['start_time'] !='' && $data['end_time'] !='')
             {
                 $where .= ' and a.created_at >= '.$data['start_time'];
             }
-            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data) && $data['start_time'] !='')
             {
                 $where .= ' and a.created_at <= '.$data['end_time'];
             }
-            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data)&& $data['end_time'] !='')
             {
                 $where .= ' and a.created_at >= '.$data['start_time'].' and a.created_at <= '.$data['end_time'];
             }   
             //分页
             //分页
             //计算总页数
-            $sqlc =  "select count(a.agent_id)  from hand_agent_card as a,hand_agent as b   ".$where;
+            $sqlc =  "select count(a.agent_id)  from hand_plat_card as a,hand_agent as b   ".$where;
             $count = db()->Query($sqlc);
             $totle = $count[0]["count(a.agent_id)"];//总数
             $limit = 3;//每页条数
@@ -276,18 +276,18 @@ class AgentCard extends Model
                 return  return_json(2,'代理不存在');
             }  
             $where = ' where a.agent_id  = b.id and a.agent_id = '.$data["id"];
-            if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data))
+              if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data) && $data['start_time'] !='' && $data['end_time'] !='')
             {
                 $where .= ' and a.created_at >= '.$data['start_time'];
             }
-            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            if(!array_key_exists('start_time', $data) && array_key_exists('end_time', $data) && $data['start_time'] !='')
             {
                 $where .= ' and a.created_at <= '.$data['end_time'];
             }
-            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data))
+            if(array_key_exists('start_time', $data) && array_key_exists('end_time', $data)&& $data['end_time'] !='')
             {
-                $where .= ' and  a.created_at >= '.$data['start_time'].' and a.created_at <= '.$data['end_time'];
-            }
+                $where .= ' and a.created_at >= '.$data['start_time'].' and a.created_at <= '.$data['end_time'];
+            } 
             //分页
             //计算总页数
             $sqlc =  "select count(a.agent_id)  from hand_agent_card as a,hand_agent as b  ".$where;
