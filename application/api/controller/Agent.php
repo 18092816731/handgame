@@ -117,15 +117,16 @@ class Agent
      */
     public function nickname(Request $request = null)
     {
-        $data = $request->param();
-        if(!array_key_exists('user_account',$data) && $data['user_account'] !='')
-        {
-            return_json(2,'用户不存在');
-        }         
-        $url = "http://112.74.161.230:8081/msh/QueryNickName?userId=".$data['user_account'];
-        $res = game_curl($url);
-        $res = json_decode($res,true);
-        if($res['result'] =='OK')
+        $data = $request->param();        
+        if(array_key_exists('user_account',$data))
+        {            
+            $url = "http://112.74.161.230:8081/msh/QueryNickName?userId=".$data['user_account'];
+        }else{
+           return return_json(2,'用户不存在');
+        } 
+         $res = game_curl($url);
+         $res = json_decode($res,true);
+         if($res['result'] =='OK')
         {
             $data['name'] = $res['data']['name'];
             return  return_json(1,'用户存在验证成功',$data);
