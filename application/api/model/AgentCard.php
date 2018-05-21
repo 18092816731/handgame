@@ -42,6 +42,7 @@ class AgentCard extends Model
                 $update['plat_id'] = $data['id'];
                 $update['agent_account']  = $data['agent_account'];
                 $update['created_at'] = time();
+                dump($update);
                 
                 //获取买卡 代理账号
                 $userInfo = db('agent')->where(['account'=>$data['agent_account']])->find();
@@ -49,6 +50,7 @@ class AgentCard extends Model
                 {
                     return  return_json(2,'代理不存在');
                 }
+                
                 $update['agent_account'] = $userInfo['account'];
                 //给代理添加房卡 平台不消耗            
                 $upplat['card_num']  = $userInfo['card_num'] + $update['card_num'];
@@ -97,9 +99,8 @@ class AgentCard extends Model
                 //调取远程游戏端接口
                 $dataGame['userId'] = $data['user_account'];
                 $dataGame['card'] = $data['card_num'];
-                //$dataGame['reqIp'] = get_client_ip();
-                $dataGame['reqIp'] ='11215451';
-                $dataGame['master'] = 'xxxx';
+                $dataGame['reqIp'] = get_client_ip();
+                $dataGame['master'] =$agentInfo['account'];
                 $url ="http://112.74.161.230:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&reqIp=".$dataGame['reqIp']."&master=".$dataGame['master'];                     
                 $gameBace = game_curl($url); 
                 $gameBace = json_decode($gameBace,'json'); 
