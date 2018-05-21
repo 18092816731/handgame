@@ -102,7 +102,6 @@ class AgentCard extends Model
                 $dataGame['master'] = 'xxxx';
                 $url ="http://112.74.161.230:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&reqIp=".$dataGame['reqIp']."&master=".$dataGame['master'];                     
                 $gameBace = game_curl($url); 
-                dump($gameBace);
                 $gameBace = json_decode($gameBace,'json'); 
                 if($gameBace['result'] !='OK')
                 {
