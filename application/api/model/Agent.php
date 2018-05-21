@@ -99,9 +99,9 @@ class Agent extends Model
                 return return_json(2,'账号或者密码有误,请重试');
             }
             //缓存token
-            $token = md5(time().'hand_game');
+      /*       $token = md5(time().'hand_game');
             $res = $this->where($find)->update(['token'=>$token]);
-            Cache::set('user_'.$response['id'],'123456',1800);
+            Cache::set('user_'.$response['id'],'123456',1800); */
             return return_json(1,'登录成功',$response);
         } else {
             Log::info('调用登录接口——查询失败');
