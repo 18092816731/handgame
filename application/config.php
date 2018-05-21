@@ -240,4 +240,5 @@ return [
         '__PUBLIC__'=> SCRIPT_DIR,
     ],
     'game_url_addCard'=>'http://112.74.161.230:8081/msh/AddArenaCard',
+    'game_key'=>'defb6dee5c4611e89c2dfa7a@!e01bbebc',
 ];

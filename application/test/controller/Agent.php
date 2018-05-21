@@ -25,15 +25,15 @@ class Agent
         //$url = $this->webUrl.'api/platform/platSendCard';
         $url = $this->testUrl.'api/platform/platSendCard';
         $data['id'] = '10';
-        $data['agent_account']  = '888888';
+        $data['agent_account']  = '18092816731';
         $data['card_num'] = 20;
         $res = $this->curl_($url, $data);
         dump($res);
     }
     public function platSendLog()
     {
-        $url = $this->webUrl.'api/platform/platSendLog';
-        //$url = $this->testUrl.'api/platform/platSendLog';
+        //$url = $this->webUrl.'api/platform/platSendLog';
+        $url = $this->testUrl.'api/platform/platSendLog';
         $data = [];
         //$data['agent_account'] = '8';
         //$data['npage'] =1;
@@ -120,11 +120,27 @@ class Agent
         $res = $this->curl_($url, $data);
         dump($res);
     }
+    public function nickname()
+    {
+        $url = $this->webUrl.'api/agent/nickname';
+        // $data['start_time'] = '1526351618';
+        // $data['end_time'] = '1526352244';
+        $data['user_account'] =100021;
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
     public function aaa()
     {
-        $url ="http://112.74.161.230:8081/msh/AddArenaCard?userId=10002079&card=40&reqIp=11215451&master=xxx";        
-        $res = game_curl($url);
-        dump($res);
+        $dataGame['userId'] = '18298562563';
+        $dataGame['card'] = 500;
+        $dataGame['reqIp'] = get_client_ip();
+        $dataGame['master'] ='666666';
+        $dataGame['time'] = time();
+        //sign = f568e7600edd703e6691f0c3d28337a2
+        //http://112.74.161.230:8081/msh/AddArenaCard?card=500&master=666666s&reqIp=2130706433&userId=18298562563&time=1526103003&auth=b17795bc06f0efec235e91333220c829
+        echo $dataGame['time'].'<br>';
+        $dataGame['auth'] = get_auth($dataGame);
+       echo  $dataGame['auth'];
     }
 
     

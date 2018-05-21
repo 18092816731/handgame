@@ -42,16 +42,11 @@ function curl_($url,$data)
 }
 //获取ip 
 function get_client_ip(){
-    if ($_SERVER['REMOTE_ADDR']) {
-        $cip = $_SERVER['REMOTE_ADDR'];
-    } elseif (getenv("REMOTE_ADDR")) {
-        $cip = getenv("REMOTE_ADDR");
-    } elseif (getenv("HTTP_CLIENT_IP")) {
-        $cip = getenv("HTTP_CLIENT_IP");
-    } else {
-        $cip = "unknown";
-    }
-    return $cip;
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $ip = explode('.',$ip);
+    $r = ($ip[0] << 24) | ($ip[1] << 16) | ($ip[2] << 8) | $ip[3];
+    if($r < 0) $r += 4294967296;       
+    return $r;
 }
 function game_curl($url)
 {    
@@ -67,4 +62,19 @@ function game_curl($url)
     //释放curl句柄
     curl_close($ch);
     return $output;
+}
+function  get_auth($data)
+{
+    $time = $data['time'];
+    $key = config('game_key');
+    unset($data['time']);
+    $str = '';
+    ksort($data);
+    foreach($data as $k=>$v)
+    {
+        $str .=$k.'='.$v.'&'; 
+    }
+    $rstr = $str.'time='.$time.'&key='.$key;
+    
+    return MD5($rstr).'------------'.$rstr;
 }
