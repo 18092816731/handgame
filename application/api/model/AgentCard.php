@@ -86,7 +86,7 @@ class AgentCard extends Model
                 {
                     return return_json(2,'房卡数目不足，请充值.当前房卡为'.$agentInfo['card_num']);
                 }                     
-                //代理房卡消耗 用户房卡逻辑不执行
+                //代理房卡消耗 用户房卡
                 $upagent['card_num']  = $agentInfo['card_num'] - $update['card_num'];
                 $upagent['update_at'] =   time();
                 $response =  db('agent')->where(['id'=>$data['id']])->update($upagent);  
@@ -94,7 +94,22 @@ class AgentCard extends Model
                 {
                     return return_json(2,'房卡数未能发放');
                 }
-                            //添加房卡使用日志
+                //调取远程游戏端接口
+                $dataGame['userId'] = $data['user_account'];
+                $dataGame['card'] = $data['card_num'];
+                //$dataGame['reqIp'] = get_client_ip();
+                $dataGame['reqIp'] ='11215451';
+                $dataGame['master'] = 'xxxx';
+                $url ="http://112.74.161.230:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&reqIp=".$dataGame['reqIp']."&master=".$dataGame['master'];                     
+                $gameBace = game_curl($url); 
+                dump($gameBace);
+                $gameBace = json_decode($gameBace,'json'); 
+                if($gameBace['result'] !='OK')
+                {
+                    return return_json(2,'游戏房卡发放失败');
+                }
+                
+                //添加房卡使用日志
                 $result = $this->insert($update);
                 if(!$result)
                 {
@@ -160,7 +175,7 @@ class AgentCard extends Model
             $page['totle'] = $totle;//总条数
             $page['tpage'] = $pageNum;//总页数
             //开始数$start $limie                
-            $sql =  "select * from  ( select a.plat_id,a.agent_account,a.card_num,a.created_at,b.account  as  agent_name from hand_plat_card as a,hand_agent as b  ".$where.") agentinfo limit ".$start.",".$limit;     
+            $sql =  "select * from  ( select a.plat_id,a.agent_account,a.card_num,a.created_at,b.account  as  agent_name from hand_plat_card as a,hand_agent as b  ".$where." order by a.created_at desc) agentinfo limit ".$start.",".$limit;     
         }else{
             if(!array_key_exists('id', $data) )
             {
@@ -206,7 +221,7 @@ class AgentCard extends Model
             $page['totle'] = $totle;//总条数
             $page['tpage'] = $pageNum;//总页数
 
-            $sql =  "select * from (select a.plat_id,a.card_num,a.created_at,a.agent_account,b.account  as  agent_name from hand_plat_card as a,hand_agent as b ".$where.") agentinfo limit ".$start.",".$limit;
+            $sql =  "select * from (select a.plat_id,a.card_num,a.created_at,a.agent_account,b.account  as  agent_name from hand_plat_card as a,hand_agent as b ".$where." order by a.created_at desc) agentinfo limit ".$start.",".$limit;
         }
         
         $res = db()->Query($sql);
@@ -274,7 +289,7 @@ class AgentCard extends Model
             $page['totle'] = $totle;//总条数
             $page['tpage'] = $pageNum;//总页数
             
-             $sql =  "select *from (select a.agent_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b  ".$where.") agentinfo limit ".$start.",".$limit;
+             $sql =  "select *from (select a.agent_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b  ".$where." order by a.created_at desc) agentinfo limit ".$start.",".$limit;
         
         }else{
             if(!array_key_exists('id',$data))
@@ -316,7 +331,7 @@ class AgentCard extends Model
             $page['totle'] = $totle;//总条数
             $page['tpage'] = $pageNum;//总页数
             
-            $sql =  "select * from (select a.agent_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b ".$where.") agentinfo limit ".$start.",".$limit;
+            $sql =  "select * from (select a.agent_id,a.card_num,a.created_at,a.user_account,b.account  as  agent_name from hand_agent_card as a,hand_agent as b ".$where." order by a.created_at desc) agentinfo limit ".$start.",".$limit;
             }
             $res = db()->Query($sql);
         //判断是否为空

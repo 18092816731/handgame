@@ -112,6 +112,7 @@ class Agent
         $res = $this->userCard->agent_send_log($data,2);
         return $res;
     }
+    
     /**
      * 验证码接口
      */

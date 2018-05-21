@@ -1,5 +1,6 @@
 <?php 
 namespace app\test\controller;
+use think\Cache;
 
 class Agent 
 {
@@ -31,8 +32,8 @@ class Agent
     }
     public function platSendLog()
     {
-        //$url = $this->webUrl.'api/platform/platSendLog';
-        $url = $this->testUrl.'api/platform/platSendLog';
+        $url = $this->webUrl.'api/platform/platSendLog';
+        //$url = $this->testUrl.'api/platform/platSendLog';
         $data = [];
         //$data['agent_account'] = '8';
         //$data['npage'] =1;
@@ -43,11 +44,13 @@ class Agent
     }
     public function agentSendLog()
     {
-        $url = $this->webUrl.'api/platform/agentSendLog';
+       // $url = $this->webUrl.'api/platform/agentSendLog';
+        $url = $this->testUrl.'api/platform/agentSendLog';
+        $data = [];
         //$data['account'] = '8';
         //$data['start_time'] = '1526351618';
         //$data['end_time'] = '1526352244';
-        $data['npage'] =1;
+       // $data['npage'] =1;
         $res = $this->curl_($url, $data);
         dump($res);
     }
@@ -70,9 +73,10 @@ class Agent
     /*-----------------------代理-------------------------------  */
     public function agent_login()
     {
-        $url = $this->webUrl.'api/agent/agent_login';
+        $url = $this->webUrl.'api/agent/agentLogin';
         $data['account'] = '888888';
-        $data['password']  = '123456';
+        $data['opassword']  = '123456';
+        $data['password']  = '1234567';
         $res = $this->curl_($url, $data);
         dump($res);
     }
@@ -80,16 +84,18 @@ class Agent
     {
         $url = $this->webUrl.'api/agent/agentSendCard';
         $data['id'] = 5;
-        $data['user_account']  = 'ID564823';
+        $data['user_account']  = '10002079';
         $data['card_num'] = 20;
         $res = $this->curl_($url, $data);
         dump($res);
     }
     public function agent_change()
     {
-        $url = $this->webUrl.'api/agent/agent_change';
+       // $url = $this->webUrl.'api/agent/agent_change';
+        $url = $this->testUrl.'api/platform/agentChange';
         $data['account'] = '888888';
         $data['password']  = '1234567';
+        $data['opassword'] = '123456';
         $data['id'] = 5;
         $res = $this->curl_($url, $data);
         dump($res);
@@ -98,7 +104,6 @@ class Agent
     {
         $url = $this->webUrl.'api/agent/agentGetCard';
         $data['id'] =5;
-      //  $data['agent_account'] = 888888;
         //$data['start_time'] = '1526351618';
         //$data['start_time'] =   '1526352244';
         $data['npage'] =1;
@@ -109,15 +114,19 @@ class Agent
     {
         $url = $this->webUrl.'api/agent/agentSendLog';
         $data['id'] = 5;
-        //$data['agent_account'] = 888888;
        // $data['start_time'] = '1526351618';
        // $data['end_time'] = '1526352244';
         $data['npage'] =2;
         $res = $this->curl_($url, $data);
         dump($res);
     }
-    
-    
+    public function aaa()
+    {
+        $url ="http://112.74.161.230:8081/msh/AddArenaCard?userId=10002079&card=40&reqIp=11215451&master=xxx";        
+        $res = game_curl($url);
+        dump($res);
+    }
+
     
     public function curl_($url,$data)
     {

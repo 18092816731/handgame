@@ -239,4 +239,5 @@ return [
     'view_replace_str'       => [
         '__PUBLIC__'=> SCRIPT_DIR,
     ],
+    'game_url_addCard'=>'http://112.74.161.230:8081/msh/AddArenaCard',
 ];
