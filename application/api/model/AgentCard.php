@@ -97,14 +97,14 @@ class AgentCard extends Model
                     return return_json(2,'房卡数未能发放');
                 }
                 //调取远程游戏端接口
-                $dataGame['userId'] = $data['user_account'];
-                $dataGame['card'] = $data['card_num'];
-                $dataGame['reqIp'] = get_client_ip();
+                $dataGame['userId'] =$data['user_account'];
+                $dataGame['card'] =$data['card_num'];
+                $dataGame['reqIp'] =get_client_ip();
                 $dataGame['master'] =$agentInfo['account'];
                 $dataGame['time'] = time();
-                $dataGame['auth'] = get_auth($dataGame);
-                $url ="http://112.74.161.230:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&reqIp=".$dataGame['reqIp']."&master=".$dataGame['master'];                     
-                $gameBace = game_curl($url); 
+                $dataGame['auth'] =get_auth($dataGame);               
+                $url ="http://101.201.234.189:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&master=".$dataGame['master']."&reqIp=".$dataGame['reqIp']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];
+                $gameBace = game_curl($url);   
                 $gameBace = json_decode($gameBace,'json'); 
                 if($gameBace['result'] !='OK')
                 {

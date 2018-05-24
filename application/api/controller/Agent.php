@@ -113,14 +113,24 @@ class Agent
         return $res;
     }
     /**
-     * 3-1根据id掉昵称
+     * 3-1根据id昵称
      */
     public function nickname(Request $request = null)
     {
-        $data = $request->param();        
+        $data = $request->param();    
+        if(!array_key_exists('account',$data))
+        {
+            return return_json(2,'代理信息故障');
+        }
         if(array_key_exists('user_account',$data))
         {            
-            $url = "http://112.74.161.230:8081/msh/QueryNickName?userId=".$data['user_account'];
+            $dataGame['userId'] = $data['user_account'];
+            $dataGame['reqIp'] = get_client_ip();            
+            $dataGame['master'] =$data['account'];
+            $dataGame['time'] = time();
+            $dataGame['auth'] = get_auth($dataGame);
+            $url ="http://101.201.234.189:8081/msh/QueryNickName?userId=".$dataGame['userId']."&master=".$dataGame['master']."&reqIp=".$dataGame['reqIp']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];
+        
         }else{
            return return_json(2,'用户不存在');
         } 

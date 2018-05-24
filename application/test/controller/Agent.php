@@ -82,12 +82,26 @@ class Agent
     }
     public function agentSendCard()
     {
-        $url = $this->webUrl.'api/agent/agentSendCard';
+         $url = $this->webUrl.'api/agent/agentSendCard';
         $data['id'] = 5;
-        $data['user_account']  = '10002079';
-        $data['card_num'] = 20;
+        $data['user_account']  = '10000010';
+        $data['account']='18092816732';
+        $dataGame['master'] ='18092816731';
+        $data['card_num'] = 10;
         $res = $this->curl_($url, $data);
-        dump($res);
+
+        dump($res);  
+   /*      $dataGame['card'] = 10;
+        $dataGame['userId'] = '10000010';
+        $dataGame['reqIp'] = get_client_ip();
+        $dataGame['master'] ='888888';
+        $dataGame['time'] = time();
+        $dataGame['auth'] = get_auth($dataGame);
+        dump($dataGame);
+        $url ="http://101.201.234.189:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&reqIp=".$dataGame['reqIp']."&master=".$dataGame['master']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];;
+        $gameBace = game_curl($url);
+        $gameBace = json_decode($gameBace,'json');
+        dump($gameBace);  */
     }
     public function agent_change()
     {
@@ -123,24 +137,29 @@ class Agent
     public function nickname()
     {
         $url = $this->webUrl.'api/agent/nickname';
+        //$url = $this->testUrl.'api/agent/nickname';
         // $data['start_time'] = '1526351618';
         // $data['end_time'] = '1526352244';
-        $data['user_account'] =100021;
+        $data['user_account'] =10000007;
+        $data['account'] ='18092816732';
         $res = $this->curl_($url, $data);
         dump($res);
     }
     public function aaa()
     {
-        $dataGame['userId'] = '18298562563';
-        $dataGame['card'] = 500;
+        $dataGame['userId'] = '10000007';
         $dataGame['reqIp'] = get_client_ip();
-        $dataGame['master'] ='666666';
+        $dataGame['master'] ='18092816732';
         $dataGame['time'] = time();
+       
         //sign = f568e7600edd703e6691f0c3d28337a2
-        //http://112.74.161.230:8081/msh/AddArenaCard?card=500&master=666666s&reqIp=2130706433&userId=18298562563&time=1526103003&auth=b17795bc06f0efec235e91333220c829
-        echo $dataGame['time'].'<br>';
+       //$url = " http://112.74.161.230:8081/msh/AddArenaCard?card=500&master=666666s&reqIp=2130706433&userId=18298562563&time=1526103003&auth=b17795bc06f0efec235e91333220c829";
         $dataGame['auth'] = get_auth($dataGame);
-       echo  $dataGame['auth'];
+        //$url = "http://101.201.234.189:8081/msh/AddArenaCard?card=500&master=6666&reqIp=2130706433&userId=18298562563&time=".$dataGame['time']."&auth=".$dataGame['auth'];
+        $url ="http://101.201.234.189:8081/msh/QueryNickName?userId=10000007&master=18092816732&reqIp=".$dataGame['reqIp']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];
+        echo $url;
+        $game_curl = game_curl($url);
+       dump($game_curl);
     }
 
     

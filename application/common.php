@@ -76,5 +76,5 @@ function  get_auth($data)
     }
     $rstr = $str.'time='.$time.'&key='.$key;
     
-    return MD5($rstr).'------------'.$rstr;
+    return md5($rstr);
 }

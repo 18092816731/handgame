@@ -5,7 +5,9 @@ class Index
 {
     public function index()
     {
-        return  'ol123';
+        echo md5('xamsh002');
+        echo '<br>';
+        echo md5('xamsh003');
         //$res = db('user_log')->select();
         
         //return view('index');
