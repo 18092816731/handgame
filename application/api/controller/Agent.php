@@ -128,12 +128,13 @@ class Agent
             $dataGame['reqIp'] = get_client_ip();            
             $dataGame['master'] =$data['account'];
             $dataGame['time'] = time();
-            $dataGame['auth'] = get_auth($dataGame);
+            $dataGame['auth'] = get_auth($dataGame);            
             $url ="http://101.201.234.189:8081/msh/QueryNickName?userId=".$dataGame['userId']."&master=".$dataGame['master']."&reqIp=".$dataGame['reqIp']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];
-        
+    
         }else{
            return return_json(2,'用户不存在');
         } 
+        
          $res = game_curl($url);
          $res = json_decode($res,true);
          if($res['result'] =='OK')

@@ -147,16 +147,17 @@ class Agent
     }
     public function aaa()
     {
-        $dataGame['userId'] = '10000007';
-        $dataGame['reqIp'] = get_client_ip();
-        $dataGame['master'] ='18092816732';
+        $dataGame['orderSn'] ='H528159378980009';
+        $dataGame['amount'] =3; 
+        $dataGame['cpParam'] ='dXNlcmlkPTEwMDAyMTUwJmdvb2RzaWQ9NDEwMjEwMDEmYXBwaWQ9NDEwMiZjYXRlZ29yeT0xMCZ0aGVuY29pbj0xMTAwMDAmY2x0dmVyPTE4MDUyODEw';
         $dataGame['time'] = time();
        
         //sign = f568e7600edd703e6691f0c3d28337a2
        //$url = " http://112.74.161.230:8081/msh/AddArenaCard?card=500&master=666666s&reqIp=2130706433&userId=18298562563&time=1526103003&auth=b17795bc06f0efec235e91333220c829";
         $dataGame['auth'] = get_auth($dataGame);
         //$url = "http://101.201.234.189:8081/msh/AddArenaCard?card=500&master=6666&reqIp=2130706433&userId=18298562563&time=".$dataGame['time']."&auth=".$dataGame['auth'];
-        $url ="http://101.201.234.189:8081/msh/QueryNickName?userId=10000007&master=18092816732&reqIp=".$dataGame['reqIp']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];
+        $url = "112.74.161.230:8081/pay/msh/PaymentCompleteNotify?orderSn=H528159378980009&amount=3&cpParam=dXNlcmlkPTEwMDAyMTUwJmdvb2RzaWQ9NDEwMjEwMDEmYXBwaWQ9NDEwMiZjYXRlZ29yeT0xMCZ0aGVuY29pbj0xMTAwMDAmY2x0dmVyPTE4MDUyODEw"."&time=".$dataGame['time']."&auth=".$dataGame['auth'];
+       // $url ="http://101.201.234.189:8081/msh/QueryNickName?userId=10000007&master=18092816732&reqIp=".$dataGame['reqIp']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];
         echo $url;
         $game_curl = game_curl($url);
        dump($game_curl);

@@ -42,7 +42,6 @@ class AgentCard extends Model
                 $update['plat_id'] = $data['id'];
                 $update['agent_account']  = $data['agent_account'];
                 $update['created_at'] = time();
-                dump($update);
                 
                 //获取买卡 代理账号
                 $userInfo = db('agent')->where(['account'=>$data['agent_account']])->find();
