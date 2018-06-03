@@ -56,12 +56,13 @@ class Agent
     }
     public function plat_created()
     {
-        $url = $this->webUrl.'api/platform/platCreated';
-        $data['account'] = '666888';
+        //$url = $this->webUrl.'api/platform/platCreated';
+       $url =  $this->testUrl.'api/platform/platCreated';
+        $data['account'] = '6668377';
         $data['password']  = '123456';
         $data['phone'] = '13211235468';
         $data['wx_name'] = '13211235468';
-        $data['rname'] = '王五';
+        $data['rname'] = '王五1';
         $data['pid'] =4;
         $res = $this->curl_($url, $data);
         dump($res);
