@@ -56,10 +56,20 @@ class Agent
     }
     public function plat_created()
     {
-        $url = $this->webUrl.'api/platform/plat_created';
+        $url = $this->webUrl.'api/platform/platCreated';
         $data['account'] = '666888';
         $data['password']  = '123456';
+        $data['phone'] = '13211235468';
+        $data['wx_name'] = '13211235468';
+        $data['rname'] = '王五';
         $data['pid'] =4;
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
+    public function agentList()
+    {
+        $url = $this->webUrl.'api/agent/agentList';
+        $data = [];
         $res = $this->curl_($url, $data);
         dump($res);
     }
@@ -108,6 +118,7 @@ class Agent
        // $url = $this->webUrl.'api/agent/agent_change';
         $url = $this->testUrl.'api/platform/agentChange';
         $data['account'] = '888888';
+
         $data['password']  = '1234567';
         $data['opassword'] = '123456';
         $data['id'] = 5;

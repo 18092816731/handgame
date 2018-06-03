@@ -140,7 +140,7 @@ class AgentCard extends Model
         if($type==1)
         {//平台记录查询
             $where = 'where a.plat_id  = b.id ';
-                  if(array_key_exists('account',$data) && $data['account'] !='')
+            if(array_key_exists('account',$data) && $data['account'] !='')
             {
                 $where .= ' and account like  "%'.$data["account"].'%"';
             }

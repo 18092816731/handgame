@@ -38,6 +38,7 @@ class Agent
         $res = $this->agent->created_agent();        
         return $res;
     }
+    
     /**
      * 1-2 代理账号信息修改
      * @param Request $request
@@ -73,6 +74,18 @@ class Agent
         $data = $request->param();
         //调取添加表
         $res = $this->agent->agent_card_num($data);
+        return $res;
+    }
+    /**
+     * 1-5  代理列表
+     * @param Request $request
+     */
+    public function agentList(Request $request = null)
+    {
+        //获取参数
+        $data = $request->param();
+        //调取添加表
+        $res = $this->agent->agentList($data);
         return $res;
     }
     
