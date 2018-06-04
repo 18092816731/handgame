@@ -71,7 +71,7 @@ class Agent extends Model
         {
             $where = 'where and account like  "%'.$data["account"].'%"';
         }else{
-            $where = 'where pid <> 0';
+            $where = 'where pid > 0';
         }
        
         //分页
@@ -96,7 +96,7 @@ class Agent extends Model
         $page['totle'] = $totle;//总条数
         $page['tpage'] = $pageNum;//总页数
         //开始数$start $limie
-        $sql =  "select * from  hand_agent limit ".$start.",".$limit;
+        $sql =  "select * from  hand_agent where pid > 0 limit ".$start.",".$limit;
         $res = db()->Query($sql);
         if(!$res)
         {
