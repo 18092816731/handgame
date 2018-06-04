@@ -86,8 +86,7 @@ class Agent
     {
         $url = $this->webUrl.'api/agent/agentLogin';
         $data['account'] = '888888';
-        $data['opassword']  = '123456';
-        $data['password']  = '1234567';
+        $data['password']  = '123456';
         $res = $this->curl_($url, $data);
         dump($res);
     }
@@ -154,6 +153,34 @@ class Agent
         // $data['end_time'] = '1526352244';
         $data['user_account'] =10000007;
         $data['account'] ='18092816732';
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
+    public function change_info()
+    {
+        $url = $this->webUrl.'api/agent/agentInfoChange';
+
+        $data['id'] =11;
+        $data['phone'] ='18092816732';
+        $data['rname'] ='田鹏';
+        $data['wx_name'] ='田鹏';
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
+    public function agentStatus()
+    {
+        $url = $this->webUrl.'api/agent/agentStatus';
+    
+        $data['id'] =11;
+        $data['status'] ='2';
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
+    public function agentInfo()
+    {
+        $url = $this->webUrl.'api/agent/agentInfo';
+    
+        $data['id'] =11;
         $res = $this->curl_($url, $data);
         dump($res);
     }

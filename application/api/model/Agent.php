@@ -135,13 +135,16 @@ class Agent extends Model
         }
         $find['account'] = $data['account'];
         $find['password'] = md5($data['password']);
-        $find['status']   = 1;
         $find['pid'] = array('neq',0);
         //查询数据
-        $response = $this->where($find)->field('id,pid,account,card_num,token')->find();
+        $response = $this->where($find)->field('id,pid,account,status,card_num,token')->find();
         if($response['pid']===0)
         {
             return return_json(2,'账号或者密码有误,请重试');
+        }
+        if($response['status']!=1)
+        {
+            return return_json(2,'账号异常已被禁用');
         }
         if ($response) 
         {
@@ -293,8 +296,78 @@ class Agent extends Model
             return return_json(2,'账号或者密码有误,请重试');
         }
     }
-    
+    /**
+     * 代理商列表信息修改
+     */
+    public function agentInfoChange($data)
+    {
+        if(!array_key_exists('id',$data))
+        {
+            return  return_json(2,'代理账号不能为空');
+        }
+        if(!array_key_exists('rname',$data))
+        {
+           return  return_json(2,'代理真实姓名不能为空');
+        }else{
+            $updata['rname'] = $data['rname'];
+        }
+         if(!array_key_exists('wx_name',$data))
+        {
+           return  return_json(2,'代理微信号不能为空');
+        }else{
+            $updata['wx_name'] = $data['wx_name'];
+        }
+        if(!array_key_exists('phone',$data))
+        {
+            return  return_json(2,'代理手机号不能为空');
+        }else{
+            $updata['phone'] = $data['phone'];
+        }
+        $res = $this->where(['id'=>$data['id']])->update($updata);
+        if (!$res && $res['status']!=1) {
+            return return_json(2,'代理账号异常已被禁用');
+        }else{
+            $result = $this->where(['id'=>$data['id']])->find();
+        }
+        return return_json(1,'更新成功',$result);
+    }
+    /**
+     * 代理商列表信息修改
+     */
+    public function agentStatus($data)
+    {
+        if(!array_key_exists('id',$data))
+        {
+            return  return_json(2,'代理账号不能为空');
+        }
+        if(!array_key_exists('status',$data))
+        {
+            return  return_json(2,'代理状态异常');
+        }else{
+            $updata['status'] = $data['status'];
+        }
+        $res = $this->where(['id'=>$data['id']])->update($updata);
+        if (!$res && $res['status']!=1) {
+            return return_json(2,'代理账号异常已被禁用');
+        }else{
+            $result = $this->where(['id'=>$data['id']])->find();
+        }
+        return return_json(1,'更新成功',$result);
+    }    
+    /**
+     * 代理商列表信息修改
+     */
+    public function agentInfo($data)
+    {
+        if(!array_key_exists('id',$data))
+        {
+            return  return_json(2,'代理账号不能为空');
+        }
 
-
-    
+        $result = $this->where(['id'=>$data['id']])->find();
+        if (!$result && $result['status']!=1) {
+            return return_json(2,'代理账号异常已被禁用');
+        }
+        return return_json(1,'更新成功',$result);
+    }
 }

@@ -88,6 +88,39 @@ class Agent
         $res = $this->agent->agentList($data);
         return $res;
     }
+    /**
+     * 1-6 代理商修改
+     */
+    public function agentInfoChange(Request $request = null)
+    {
+        //获取参数
+        $data = $request->param();
+        //调取添加表
+        $res = $this->agent->agentInfoChange($data);
+        return $res;
+    }
+    /**
+     * 1-7 代理商状态修改
+     */
+    public function agentStatus(Request $request = null)
+    {
+        //获取参数
+        $data = $request->param();
+        //调取添加表
+        $res = $this->agent->agentStatus($data);
+        return $res;
+    }
+    /**
+     * 1-8 代理商状态修改
+     */
+    public function agentInfo(Request $request = null)
+    {
+        //获取参数
+        $data = $request->param();
+        //调取添加表
+        $res = $this->agent->agentInfo($data);
+        return $res;
+    }
     
     /**
      * 2-1 代理发房卡
