@@ -71,7 +71,7 @@ class Agent extends Model
         {
             $where = 'where and account like  "%'.$data["account"].'%"';
         }else{
-            $where = '';
+            $where = 'where pid <> 0';
         }
        
         //分页
