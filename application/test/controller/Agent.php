@@ -1,6 +1,7 @@
 <?php 
 namespace app\test\controller;
 use think\Cache;
+use think\Config;
 
 class Agent 
 {
@@ -148,6 +149,8 @@ class Agent
     public function nickname()
     {
         $url = $this->webUrl.'api/agent/nickname';
+        $url ="http://".Config::get('web_url')."/msh/QueryNickName";
+        dump($url);
         //$url = $this->testUrl.'api/agent/nickname';
         // $data['start_time'] = '1526351618';
         // $data['end_time'] = '1526352244';

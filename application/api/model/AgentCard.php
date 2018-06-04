@@ -5,6 +5,7 @@ use think\Model;
 use think\Log;
 use think\Db;
 use think\db\Query;
+use think\Config;
 
 class AgentCard extends Model
 {
@@ -103,7 +104,7 @@ class AgentCard extends Model
                 $dataGame['master'] =$agentInfo['account'];
                 $dataGame['time'] = time();
                 $dataGame['auth'] =get_auth($dataGame);               
-                $url ="http://101.201.234.189:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&master=".$dataGame['master']."&reqIp=".$dataGame['reqIp']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];
+                $url ="http://".Config::get('web_url')."/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&master=".$dataGame['master']."&reqIp=".$dataGame['reqIp']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];
                 $gameBace = game_curl($url);   
                 $gameBace = json_decode($gameBace,'json'); 
                 if($gameBace['result'] !='OK')
