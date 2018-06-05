@@ -122,6 +122,17 @@ class Agent
         $res = $this->agent->agentInfo($data);
         return $res;
     }
+    /**
+     * 1-8 代理商状态修改
+     */
+    public function newsPassword(Request $request = null)
+    {
+        //获取参数
+        $data = $request->param();
+        //调取添加表
+        $res = $this->agent->newsPassword($data);
+        return $res;
+    }
     
     /**
      * 2-1 代理发房卡

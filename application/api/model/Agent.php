@@ -371,4 +371,22 @@ class Agent extends Model
         }
         return return_json(1,'更新成功',$result);
     }
+    /**
+     * 代理商列表信息修改
+     */
+    public function newsPassword($data)
+    {
+        if(!array_key_exists('id',$data))
+        {
+            return  return_json(2,'代理账号不能为空');
+        }
+        $updata['password'] = md5('123456');
+        $result1 = $this->where(['id'=>$data['id']])->update($updata);
+        if (!$result1 ) {
+            return return_json(2,'代理账号密码已重置');
+        }else{
+            $result = $this->where(['id'=>$data['id']])->find();
+        }
+        return return_json(1,'更新成功',$result);
+    }
 }

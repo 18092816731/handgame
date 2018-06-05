@@ -187,6 +187,14 @@ class Agent
         $res = $this->curl_($url, $data);
         dump($res);
     }
+    public function newsPassword()
+    {
+        $url = $this->webUrl.'api/agent/newsPassword';
+    
+        $data['id'] =11;
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
     public function aaa()
     {
         $dataGame['orderSn'] ='H528159378980009';
