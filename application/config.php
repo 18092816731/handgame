@@ -241,6 +241,6 @@ return [
     ],
     'game_url_addCard'=>'http://112.74.161.230:8081/msh/AddArenaCard',
     'game_key'=>'defb6dee5c4611e89c2dfa7a@!e01bbebc',
-    'web_url'=>"112.74.161.230:8081",
+    //'web_url'=>"112.74.161.230:8081",
     'web_url'=>"101.201.234.189:8081",
 ];
