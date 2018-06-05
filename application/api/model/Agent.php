@@ -142,12 +142,13 @@ class Agent extends Model
         {
             return return_json(2,'账号或者密码有误,请重试');
         }
-        if($response['status']!=1)
-        {
-            return return_json(2,'账号异常已被禁用');
-        }
+
         if ($response) 
         {
+            if($response['status']!=1)
+            {
+                return return_json(2,'账号异常已被禁用');
+            }
             Log::info('调用登录接口——查询成功');
             $insert['agent_id'] = $response['id'];
             $insert['login_time'] = time();
