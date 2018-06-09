@@ -86,19 +86,19 @@ class Agent
     public function agentCdCreated()
     {
         //$url = $this->webUrl.'api/platform/platCreated';
-        $url =  $this->webUrl.'api/agent/agentCdCreated';
-        $data['account'] = '6668375';
+        $url =  $this->testUrl.'api/agent/agentCdCreated';
+        $data['account'] = '6668374';
         $data['password']  = '123456';
-        $data['phone'] = '18091623465';
+        $data['phone'] = '18091623463';
         $data['wx_name'] = '13211235462';
-        $data['rname'] = '张三s';
+        $data['rname'] = '李四';
         $data['pid'] =11;
         $res = $this->curl_($url, $data);
         dump($res);
     }
     public function agentCdList()
     {
-        $url = $this->webUrl.'api/agent/agentCdList';
+        $url = $this->testUrl.'api/agent/agentCdList';
         $data['pid'] = 11;
         $data['account']= '37';
         $res = $this->curl_($url, $data);
