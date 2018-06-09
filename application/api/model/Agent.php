@@ -22,6 +22,11 @@ class Agent extends Model
         if(!array_key_exists('phone',$data))
         {
             return  return_json(2,'新增代理手机号不能为空');
+        }else{
+            $mobile = is_mobile($data['phone']);
+            if(!$mobile){
+                return return_json(2,'请输入正确手机号');
+            }
         }
         if(!array_key_exists('wx_name',$data))
         {
@@ -42,16 +47,17 @@ class Agent extends Model
         
         //参数验证       
         $insert['account'] = $data['account'];
-        $insert['password']= md5($data['password']);
-        $insert['phone'] = $data['phone'];
-        $insert['wx_name'] = $data['wx_name'];
-        $insert['rname'] = $data['rname'];
+
         //防止重复
         $find = $this->where($insert)->find();
         if($find)
         {
            return return_json(2,'账号已存在');
         }
+        $insert['password']= md5($data['password']);
+        $insert['phone'] = $data['phone'];
+        $insert['wx_name'] = $data['wx_name'];
+        $insert['rname'] = $data['rname'];
         //执行添加
         $insert['pid']     = $data['pid'];
         $insert['created_at'] = time();
@@ -65,20 +71,26 @@ class Agent extends Model
            return return_json(1,'创建成功',$res);
         }
     }
-    public function agentList($data)
+    /**
+     * 代理下代理列表 param $type = 1  平台下的代理列表
+     * @param unknown $data
+     * @return string
+     */
+    public function agentCdList($data)
     {
+        if(!array_key_exists('pid', $data)){
+            return  return_json(2,'代理信息异常，请联系客服');
+        }
         if(array_key_exists('account',$data) && $data['account'] !='')
         {
-            $where = 'where and account like  "%'.$data["account"].'%"';
+            $where = 'where  account like  "%'.$data["account"].'%"  and  pid = '.$data['pid'];
         }else{
-            $where = 'where pid > 0';
+            $where = 'where pid ='.$data['pid'];
         }
        
         //分页
         //计算总页数
-        $sqlc =  "select count(id)  from hand_agent ".$where;
-  
-        
+        $sqlc =  "select count(id)  from hand_agent ".$where;  
         $count = db()->Query($sqlc);      
         $totle = $count[0]["count(id)"];//总数
         $limit = 15;//每页条数
@@ -96,7 +108,53 @@ class Agent extends Model
         $page['totle'] = $totle;//总条数
         $page['tpage'] = $pageNum;//总页数
         //开始数$start $limie
-        $sql =  "select * from  hand_agent where pid > 0 limit ".$start.",".$limit;
+        $sql =  "select * from  hand_agent ".$where."  limit ".$start.",".$limit;
+  
+        $res = db()->Query($sql);
+        if(!$res)
+        {
+            return return_json(1,'暂无信息 ');
+        }
+        //返回结果
+        return return_json(1,'平台发卡记录',$res,$page);
+    }
+    /**
+     * 平台下代理列表 param $type = 1  平台下的代理列表
+     * @param unknown $data
+     * @return string
+     */
+    public function agentList($data)
+    {
+        if(array_key_exists('account',$data) && $data['account'] !='')
+        {
+            $where = 'where  account like  "%'.$data["account"].'%" and where pid > 0';
+        }else{
+            $where = 'where pid > 0';
+        }
+         
+        //分页
+        //计算总页数
+        $sqlc =  "select count(id)  from hand_agent ".$where;
+    
+    
+        $count = db()->Query($sqlc);
+        $totle = $count[0]["count(id)"];//总数
+        $limit = 15;//每页条数
+        $pageNum = ceil ( $totle/$limit); //总页数
+        //当前页
+        if(array_key_exists('npage', $data))
+        {
+            $npage = $data['npage'];
+        }else{
+            $npage = 1;
+        }
+        $start = ($npage-1)*$limit;
+        $page = [];
+        $page['npage'] = $npage;//当前页
+        $page['totle'] = $totle;//总条数
+        $page['tpage'] = $pageNum;//总页数
+        //开始数$start $limie
+        $sql =  "select * from  hand_agent ".$where." limit ".$start.",".$limit;
         $res = db()->Query($sql);
         if(!$res)
         {

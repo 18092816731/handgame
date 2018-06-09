@@ -204,6 +204,30 @@ class Agent
         }
     
     }
+    /* 代理下招代理 */
+    /**
+     * 代理新增代理
+     */
+    public function agentCdCreated(Request $request = null)
+    {
+        //获取参数
+        $date = $request->param();
+        //调取添加表
+        $res = $this->agent->created_agent($date);
+        return $res;
+    }
+    /**
+     * 代理下代理列表
+     */
+    public function agentCdList(Request $request = null)
+    {
+        //获取参数
+        $data = $request->param();
+        //调取添加表
+        $res = $this->agent->agentCdList($data);
+        return $res;
+    }
+    
     
     /**
      * 验证码接口
