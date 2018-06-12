@@ -171,6 +171,54 @@ class Agent
         return $res;
     }
     /**
+     * 2-4 代理单发
+     * @param Request $request
+     */
+    public function agentOneSend(Request $request = null)
+    {
+    	//获取参数
+    	$data = $request->param();
+    	//调取添加表
+    	$res = $this->userCard->agentOneSend($data,2);
+    	return $res;
+    }
+    /**
+     * 2-5 代理给代理发
+     * @param Request $request
+     */
+    public function agentToAgent(Request $request = null)
+    {
+    	//获取参数
+    	$data = $request->param();
+    	//调取添加表
+    	$res = $this->userCard->agentToAgent($data,2);
+    	return $res;
+    }
+    /**
+     * 2-5 代理给代理发记录
+     * @param Request $request
+     */
+    public function agentOneLog(Request $request = null)
+    {
+    	//获取参数
+    	$data = $request->param();
+    	//调取添加表
+    	$res = $this->userCard->agentOneLog($data,2);
+    	return $res;
+    }
+    /**
+     * 2-6 代理给用户单发记录
+     * @param Request $request
+     */
+    public function agentToLog(Request $request = null)
+    {
+    	//获取参数
+    	$data = $request->param();
+    	//调取添加表
+    	$res = $this->userCard->agent_send_log($data,2);
+    	return $res;
+    }
+    /**
      * 3-1根据id昵称
      */
     public function nickname(Request $request = null)

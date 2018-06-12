@@ -436,6 +436,22 @@ class Agent extends Model
     /**
      * 代理商列表信息修改
      */
+    public function agentAcInfo($data)
+    {
+    	if(!array_key_exists('account',$data))
+    	{
+    		return  return_json(2,'代理账号不能为空');
+    	}
+    	
+    	$result = $this->where(['account'=>$data['account']])->find();
+    	if (!$result && $result['status']!=1) {
+    		return return_json(2,'代理账号异常已被禁用');
+    	}
+    	return return_json(1,'更新成功',$result);
+    }
+    /**
+     * 代理商列表信息修改
+     */
     public function newsPassword($data)
     {
         if(!array_key_exists('id',$data))

@@ -46,12 +46,12 @@ class Agent
     public function agentSendLog()
     {
        // $url = $this->webUrl.'api/platform/agentSendLog';
-        $url = $this->testUrl.'api/platform/agentSendLog';
+        $url = $this->testUrl.'api/agent/agentSendLog';
         $data = [];
-        //$data['account'] = '8';
+        $data['id'] = '11';
         //$data['start_time'] = '1526351618';
         //$data['end_time'] = '1526352244';
-       // $data['npage'] =1;
+        $data['npage'] =1;
         $res = $this->curl_($url, $data);
         dump($res);
     }
