@@ -144,6 +144,17 @@ class Agent
         $res = $this->agent->agentAcInfo($data);
         return $res;
     }
+    /**
+     * 1-9 代理账号获取代理信息
+     */
+    public function cardInfo(Request $request = null)
+    {
+        //获取参数
+        $data = $request->param();
+        //调取添加表
+        $res = $this->agent->cardInfo($data);
+        return $res;
+    }
     
     /**
      * 2-1 代理发房卡

@@ -13,6 +13,15 @@ class Agent
         $this->testUrl = 'baiyao.91yelang.top/';
     }
     /*2018-6-12  */
+    public function cardInfo()
+    {
+        $url = $this->webUrl.'api/agent/cardInfo';
+        //$url = $this->testUrl.'api/agent/cardInfo';
+        $data = [];
+        $data['id'] = '11';
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
     public function agentOneLog()
     {
         $url = $this->webUrl.'api/agent/agentOneLog';
@@ -24,8 +33,6 @@ class Agent
         $url = $this->webUrl.'api/agent/agentOneSend';
         $data['id'] = 21;
         $data['user_account']  = '10002124';
-        $data['account']='18092816732';
-        $dataGame['master'] ='18092816731';
         $data['card_num'] = 10;
         $data['wx_name'] = 'xiaoxiao';
         $res = $this->curl_($url, $data);

@@ -248,6 +248,24 @@ class Agent extends Model
         return return_json(1,'代理房卡',$find);
     }
     /**
+     * 平台房卡数
+     */
+    public function cardInfo($data)
+    {
+        if(!array_key_exists('id',$data))
+        {
+            return  return_json(2,'代理账号不存在');
+        }
+    
+        $where['id'] = $data['id'];
+        $find = $this->field('card_num')->where($where)->find();
+        if(!$find)
+        {
+            return return_json(2,'账号信息有误');
+        }
+        return return_json(1,'代理房卡',$find);
+    }
+    /**
      * 平台退出
      */
     public function plat_loginout($data)
