@@ -457,11 +457,21 @@ class AgentCard extends Model
     		{
     		    return  return_json(2, '微信不能为空');
     		}
+    		if(!array_key_exists('phone' ,$data))
+    		{
+    		    return  return_json(2, '微信不能为空');
+    		}
+    		if(!array_key_exists('rname' ,$data))
+    		{
+    		    return  return_json(2, '微信不能为空');
+    		}
     		//参数验证
     		$update['card_num'] = $data['card_num'];
     		$update['agent_id'] = $data['id']; //代理id
     		$update['user_account'] = $data['user_account'];//购买房卡用户账号
     		$update['wx_name'] = $data['wx_name'];
+    /* 		$update['rname'] = $data['rname'];
+    		$update['phone'] = $data['phone']; */
     		$update['created_at'] = time();
     	
     		//获取代理信息
@@ -625,7 +635,7 @@ class AgentCard extends Model
     	$page['totle'] = $totle;//总条数
     	$page['tpage'] = $pageNum;//总页数
     	
-    	$sql =  "select * from (select a.agent_id,a.card_num,a.created_at,a.user_account,a.wx_name,b.account  as  agent_name from hand_agent_card as a,hand_agent as b ".$where." order by a.created_at desc) agentinfo limit ".$start.",".$limit;
+    	$sql =  "select * from (select a.agent_id,a.card_num,a.created_at,a.user_account,a.wx_name,b.account as  agent_name,b.phone as phone,b.rname as rname  from hand_agent_card as a,hand_agent as b ".$where." order by a.created_at desc) agentinfo limit ".$start.",".$limit;
     	
     	$res = db()->Query($sql);
     	//判断是否为空
