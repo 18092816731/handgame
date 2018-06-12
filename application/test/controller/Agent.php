@@ -39,8 +39,8 @@ class Agent
     }
     public function agentAcInfo()
     {
-        $url = $this->webUrl.'api/agent/agentAcInfo';
-        //$url = $this->testUrl.'api/agent/agentAcInfo';
+        //$url = $this->webUrl.'api/agent/agentAcInfo';
+        $url = $this->testUrl.'api/agent/agentAcInfo';
         $data = [];
         $data['account'] = '666888';
         $res = $this->curl_($url, $data);

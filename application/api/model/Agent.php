@@ -463,9 +463,9 @@ class Agent extends Model
     	
     	$result = $this->where(['account'=>$data['account']])->find();
     	if (!$result && $result['status']!=1) {
-    		return return_json(2,'代理账号异常已被禁用');
+    		return return_json(2,'代理账号不存在');
     	}
-    	return return_json(1,'更新成功',$result);
+    	return return_json(1,'查询成功',$result);
     }
     /**
      * 代理商列表信息修改
