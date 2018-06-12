@@ -133,6 +133,17 @@ class Agent
         $res = $this->agent->newsPassword($data);
         return $res;
     }
+    /**
+     * 1-8 代理账号获取代理信息
+     */
+    public function agentAcInfo(Request $request = null)
+    {
+        //获取参数
+        $data = $request->param();
+        //调取添加表
+        $res = $this->agent->agentAcInfo($data);
+        return $res;
+    }
     
     /**
      * 2-1 代理发房卡
@@ -179,7 +190,7 @@ class Agent
     	//获取参数
     	$data = $request->param();
     	//调取添加表
-    	$res = $this->userCard->agentOneSend($data,2);
+    	$res = $this->userCard->agentOneSend($data);
     	return $res;
     }
     /**
@@ -191,7 +202,7 @@ class Agent
     	//获取参数
     	$data = $request->param();
     	//调取添加表
-    	$res = $this->userCard->agentToAgent($data,2);
+    	$res = $this->userCard->agentToAgent($data);
     	return $res;
     }
     /**
@@ -203,7 +214,7 @@ class Agent
     	//获取参数
     	$data = $request->param();
     	//调取添加表
-    	$res = $this->userCard->agentOneLog($data,2);
+    	$res = $this->userCard->agentOneLog($data);
     	return $res;
     }
     /**
@@ -215,7 +226,7 @@ class Agent
     	//获取参数
     	$data = $request->param();
     	//调取添加表
-    	$res = $this->userCard->agent_send_log($data,2);
+    	$res = $this->userCard->agentToLog($data);
     	return $res;
     }
     /**

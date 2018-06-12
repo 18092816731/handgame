@@ -12,6 +12,60 @@ class Agent
         $this->webUrl = 'http://www.handgame.com/';
         $this->testUrl = 'baiyao.91yelang.top/';
     }
+    /*2018-6-12  */
+    public function agentOneLog()
+    {
+        $url = $this->webUrl.'api/agent/agentOneLog';
+        $data['id'] = 11;
+        $res = $this->curl_($url, $data);
+    }
+    public function agentOneSend()
+    {
+        $url = $this->webUrl.'api/agent/agentOneSend';
+        $data['id'] = 21;
+        $data['user_account']  = '10002124';
+        $data['account']='18092816732';
+        $dataGame['master'] ='18092816731';
+        $data['card_num'] = 10;
+        $data['wx_name'] = 'xiaoxiao';
+        $res = $this->curl_($url, $data);
+    }
+    public function agentAcInfo()
+    {
+        $url = $this->webUrl.'api/agent/agentAcInfo';
+        //$url = $this->testUrl.'api/agent/agentAcInfo';
+        $data = [];
+        $data['account'] = '666888';
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
+    public function agentToLog()
+    {
+        $url = $this->webUrl.'api/agent/agentToLog';
+        //$url = $this->testUrl.'api/agent/agentSendLog';
+        $data = [];
+        $data['id'] = '11';
+        $data['card_num'] = '2269';
+        $data['user_account'] = '666888';
+        $data['wx_name'] ='笑话';
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
+    public function agentToAgent()
+    {
+        $url = $this->webUrl.'api/agent/agentToAgent';
+        //$url = $this->testUrl.'api/agent/agentSendLog';
+        $data = [];
+        $data['id'] = '11';
+        $data['card_num'] = '2269';
+        $data['user_account'] = '666888';
+        //$data['start_time'] = '1526351618';
+        //$data['end_time'] = '1526352244';
+        $data['wx_name'] ='笑话';
+        $res = $this->curl_($url, $data);
+        dump($res);
+    }
+    
     public function login()
     {
         $url = $this->webUrl.'api/platform/platLogin';
@@ -45,8 +99,8 @@ class Agent
     }
     public function agentSendLog()
     {
-       // $url = $this->webUrl.'api/platform/agentSendLog';
-        $url = $this->testUrl.'api/agent/agentSendLog';
+       $url = $this->webUrl.'api/agent/agentSendLog';
+        //$url = $this->testUrl.'api/agent/agentSendLog';
         $data = [];
         $data['id'] = '11';
         //$data['start_time'] = '1526351618';
@@ -106,7 +160,7 @@ class Agent
     }
     public function agent_login()
     {
-        $url = $this->webUrl.'api/agent/agentLogin';
+        $url = $this->testUrl.'api/agent/agentLogin';
         $data['account'] = '888888';
         $data['password']  = '123456';
         $res = $this->curl_($url, $data);
@@ -115,25 +169,30 @@ class Agent
     public function agentSendCard()
     {
          $url = $this->webUrl.'api/agent/agentSendCard';
-        $data['id'] = 5;
-        $data['user_account']  = '10000010';
+        $data['id'] = 11;
+        $data['user_account']  = '10002124';
         $data['account']='18092816732';
         $dataGame['master'] ='18092816731';
         $data['card_num'] = 10;
+        $data['wx_name'] = 'xiaoxiao';
         $res = $this->curl_($url, $data);
 
         dump($res);  
-   /*      $dataGame['card'] = 10;
-        $dataGame['userId'] = '10000010';
+ /*         $dataGame['card'] = 10;
+        $dataGame['userId'] = '10002124';
         $dataGame['reqIp'] = get_client_ip();
         $dataGame['master'] ='888888';
         $dataGame['time'] = time();
         $dataGame['auth'] = get_auth($dataGame);
         dump($dataGame);
-        $url ="http://101.201.234.189:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&reqIp=".$dataGame['reqIp']."&master=".$dataGame['master']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];;
+        //正式
+        //$url ="http://101.201.234.189:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&reqIp=".$dataGame['reqIp']."&master=".$dataGame['master']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];;
+        //测试服
+        $url ="http://112.74.161.230:8081/msh/AddArenaCard?userId=".$dataGame['userId']."&card=".$dataGame['card']."&reqIp=".$dataGame['reqIp']."&master=".$dataGame['master']."&time=".$dataGame['time']."&auth=".$dataGame['auth'];;
+        
         $gameBace = game_curl($url);
         $gameBace = json_decode($gameBace,'json');
-        dump($gameBace);  */
+        dump($gameBace); */  
     }
     public function agent_change()
     {

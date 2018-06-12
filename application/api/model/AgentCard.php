@@ -72,6 +72,10 @@ class AgentCard extends Model
                 {
                     return  return_json(2,'代理账号不能为空');
                 }
+                if(!array_key_exists('wx_name',$data))
+                {
+                    return  return_json(2,'微信不存在');
+                }
                 //参数验证
                 $update['card_num']  = $data['card_num'];
                 $update['agent_id'] = $data['id']; //代理id 
@@ -449,12 +453,17 @@ class AgentCard extends Model
     		{
     			return  return_json(2, '代理账号不能为空');
     		}
+    		if(!array_key_exists('wx_name' ,$data))
+    		{
+    		    return  return_json(2, '微信不能为空');
+    		}
     		//参数验证
     		$update['card_num'] = $data['card_num'];
     		$update['agent_id'] = $data['id']; //代理id
     		$update['user_account'] = $data['user_account'];//购买房卡用户账号
     		$update['wx_name'] = $data['wx_name'];
     		$update['created_at'] = time();
+    	
     		//获取代理信息
     		$agentInfo = db('agent')->where(['id' => $data['id']])->find();
     		if(!$agentInfo)
@@ -466,6 +475,7 @@ class AgentCard extends Model
     		{
     			return return_json(2, '房卡数目不足，请充值.当前房卡为'.$agentInfo['card_num']);
     		}
+  
     		//代理房卡消耗 用户房卡
     		$upagent['card_num'] = $agentInfo['card_num'] - $update['card_num'];
     		$upagent['update_at'] = time();
@@ -474,18 +484,21 @@ class AgentCard extends Model
     		{
     			return return_json(2, '房卡数未能发放');
     		}
+    	
     		//获取买卡 代理账号
-    		$userInfo = db('agent')->where(['account'=>$data['agent_account']])->find();
+    		$userInfo = db('agent')->where(['account'=>$data['user_account']])->find();
     		if(!$userInfo)
     		{
     			return  return_json(2,'代理不存在');
     		}
     		
-    		$update['agent_account'] = $userInfo['account'];
+    		$update['user_account'] = $userInfo['account'];
     		//给代理添加房卡 平台不消耗
     		$upplat['card_num']  = $userInfo['card_num'] + $update['card_num'];
     		$upplat['update_at'] =   time();
+    		
     		$response =  db('agent')->where(['account'=>$data['user_account']])->update($upplat);
+
     		if(!$response)
     		{
     			return  return_json(2,'房卡数未能发放1');
@@ -520,7 +533,7 @@ class AgentCard extends Model
     	{
     		return  return_json(2,'代理不存在');
     	}
-    	$where = ' where a.agent_id  = b.id  and a.agent_id = '.$data["id"];
+    	$where = ' where a.agent_id  = b.id and a.status = 1  and a.agent_id = '.$data["id"];
     	if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data) && $data['start_time'] !='' && $data['end_time'] !='')
     	{
     		$where .= ' and a.created_at >= '.$data['start_time'];
@@ -593,6 +606,7 @@ class AgentCard extends Model
     	//计算总页数
     	
     	$sqlc =  "select count(a.agent_id)  from hand_agent_card as a,hand_agent as b  ".$where;
+    	
     	$count = db()->Query($sqlc);
     	
     	$totle = $count[0]["count(a.agent_id)"];//总数
@@ -620,6 +634,6 @@ class AgentCard extends Model
     		return return_json(1,'暂无信息 ');
     	}
     	//返回结果
-    	return return_json(1,'平台发卡记录',$res,$page);
+    	return return_json(1,'代理批发记录',$res,$page);
     }
 }
