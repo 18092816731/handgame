@@ -470,8 +470,8 @@ class AgentCard extends Model
     		$update['agent_id'] = $data['id']; //代理id
     		$update['user_account'] = $data['user_account'];//购买房卡用户账号
     		$update['wx_name'] = $data['wx_name'];
-     		$update['rname'] = $data['rname'];
-    		$update['phone'] = $data['phone']; 
+    /* 		$update['rname'] = $data['rname'];
+    		$update['phone'] = $data['phone']; */
     		$update['created_at'] = time();
     		
     		//获取买卡 代理账号
@@ -599,7 +599,7 @@ class AgentCard extends Model
     	{
     		return  return_json(2,'代理不存在');
     	}
-    	$where = ' where a.agent_id  = b.id and a.status = 2  and a.agent_id = '.$data["id"];
+    	$where = ' where a.user_account  = b.account and a.status = 2  and a.agent_id = '.$data["id"];
     	if(array_key_exists('start_time', $data) && !array_key_exists('end_time', $data) && $data['start_time'] !='' && $data['end_time'] !='')
     	{
     		$where .= ' and a.created_at >= '.$data['start_time'];
@@ -635,7 +635,7 @@ class AgentCard extends Model
     	$page['totle'] = $totle;//总条数
     	$page['tpage'] = $pageNum;//总页数
     	
-    	$sql =  "select * from (select a.agent_id,a.card_num,a.created_at,a.user_account,a.wx_name,b.account as  agent_name,a.phone as phone,a.rname as rname  from hand_agent_card as a,hand_agent as b ".$where." order by a.created_at desc) agentinfo limit ".$start.",".$limit;
+    	$sql =  "select * from (select a.agent_id,a.card_num,a.created_at,a.user_account,a.wx_name,b.account as  agent_name,b.phone as phone,b.rname as rname  from hand_agent_card as a,hand_agent as b ".$where." order by a.created_at desc) agentinfo limit ".$start.",".$limit;
     	
     	$res = db()->Query($sql);
     	//判断是否为空
