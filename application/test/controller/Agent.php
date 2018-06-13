@@ -42,6 +42,7 @@ class Agent
         //$url = $this->webUrl.'api/agent/agentAcInfo';
         $url = $this->testUrl.'api/agent/agentAcInfo';
         $data = [];
+        $data['id'] = '11';
         $data['account'] = '666888';
         $res = $this->curl_($url, $data);
         dump($res);
@@ -60,8 +61,8 @@ class Agent
     }
     public function agentToAgent()
     {
-        $url = $this->webUrl.'api/agent/agentToAgent';
-        //$url = $this->testUrl.'api/agent/agentSendLog';
+        //$url = $this->webUrl.'api/agent/agentToAgent';
+        $url = $this->testUrl.'api/agent/agentToAgent';
         $data = [];
         $data['id'] = '11';
         $data['card_num'] = '2269';

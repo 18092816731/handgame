@@ -481,10 +481,7 @@ class AgentCard extends Model
     		{
     			return  return_json(2,'代理不存在');
     		}
-    		if($userInfo['pid'] != $data['id'])
-    		{
-    			return  return_json(2,'此代理代理不是您的下线代理');
-    		}
+
     		$update['user_account'] = $userInfo['account'];
     		//给代理添加房卡 平台不消耗
     		$upplat['card_num']  = $userInfo['card_num'] + $update['card_num'];
