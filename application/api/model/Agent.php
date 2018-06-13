@@ -468,6 +468,9 @@ class Agent extends Model
     	if (!$result && $result['status']!=1) {
     		return return_json(2,'代理账号不存在');
     	}
+    	if($result['pid'] != $data['id']) {
+    		return return_json(2,'此代理不是您下线代理！');
+    	}
     	return return_json(1,'查询成功',$result);
     }
     /**
