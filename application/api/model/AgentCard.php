@@ -473,6 +473,29 @@ class AgentCard extends Model
     /* 		$update['rname'] = $data['rname'];
     		$update['phone'] = $data['phone']; */
     		$update['created_at'] = time();
+    		
+    		//获取买卡 代理账号
+    		$userInfo = db('agent')->where(['account'=>$data['user_account']])->find();
+    	
+    		if(!$userInfo)
+    		{
+    			return  return_json(2,'代理不存在');
+    		}
+    		if($userInfo['pid'] != $data['id'])
+    		{
+    			return  return_json(2,'此代理代理不是您的下线代理');
+    		}
+    		$update['user_account'] = $userInfo['account'];
+    		//给代理添加房卡 平台不消耗
+    		$upplat['card_num']  = $userInfo['card_num'] + $update['card_num'];
+    		$upplat['update_at'] =   time();
+    		
+    		$response =  db('agent')->where(['account'=>$data['user_account']])->update($upplat);
+    		
+    		if(!$response)
+    		{
+    			return  return_json(2,'房卡数未能发放1');
+    		}
     	
     		//获取代理信息
     		$agentInfo = db('agent')->where(['id' => $data['id']])->find();
@@ -493,27 +516,7 @@ class AgentCard extends Model
     		if(!$response)
     		{
     			return return_json(2, '房卡数未能发放');
-    		}
-    	
-    		//获取买卡 代理账号
-    		$userInfo = db('agent')->where(['account'=>$data['user_account']])->find();
-    		if(!$userInfo)
-    		{
-    			return  return_json(2,'代理不存在');
-    		}
-    		
-    		$update['user_account'] = $userInfo['account'];
-    		//给代理添加房卡 平台不消耗
-    		$upplat['card_num']  = $userInfo['card_num'] + $update['card_num'];
-    		$upplat['update_at'] =   time();
-    		
-    		$response =  db('agent')->where(['account'=>$data['user_account']])->update($upplat);
-
-    		if(!$response)
-    		{
-    			return  return_json(2,'房卡数未能发放1');
-    		}
-    	
+    		}    	
     		
     		//添加房卡使用日志
     		$update['status'] = 2;
