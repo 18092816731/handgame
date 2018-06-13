@@ -49,8 +49,8 @@ class Agent
     }
     public function agentToLog()
     {
-        $url = $this->webUrl.'api/agent/agentToLog';
-        //$url = $this->testUrl.'api/agent/agentSendLog';
+        //$url = $this->webUrl.'api/agent/agentToLog';
+        $url = $this->testUrl.'api/agent/agentToLog';
         $data = [];
         $data['id'] = '11';
         $data['card_num'] = '2269';
