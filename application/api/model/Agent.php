@@ -196,7 +196,9 @@ class Agent extends Model
         $find['pid'] = array('neq',0);
         //查询数据
         $response = $this->where($find)->field('id,pid,account,status,card_num,token')->find();
-        
+        if($response) {
+        	return return_json(2,'账号或者密码有误,请重试');
+        }
         if($response['pid']===0)
         {
             return return_json(2,'账号或者密码有误,请重试');
